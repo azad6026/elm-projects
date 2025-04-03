@@ -1,0 +1,14 @@
+{
+  "name": "elm-movie-app",
+  "version": "1.0.0",
+  "description": "Simple movie browsing app built with Elm",
+  "scripts": {
+    "elm-build": "elm make src/Main.elm --output=public/elm.js",
+    "start": "npm run elm-build && http-server public -o"
+  },
+  "author": "Azadeh",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
