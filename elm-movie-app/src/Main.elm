@@ -1,4 +1,4 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 import Browser
 import Html exposing (Html, text, div, ul, li, button, img)
@@ -6,9 +6,16 @@ import Html.Attributes exposing (style, class, src)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode
+import Json.Encode as Encode
 import Debug
 import Html exposing (figure)
 import Html exposing (figcaption)
+
+
+-- PORTS
+
+port saveFavorites : List Int -> Cmd msg
+port loadFavorites : (List Int -> msg) -> Sub msg
 
 
 main : Program () Model Msg
@@ -43,13 +50,14 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
+    -- We start with empty favorites, they will be loaded via subscription
     ( { movies = []
       , favorites = []
       , filter = "popular"
       , isLoading = True
       , errorMessage = Nothing
       }
-    , getPopularMovies
+    , getPopularMovies -- Keep fetching movies as before
     )
 
 
@@ -60,6 +68,7 @@ type Msg
     = GotMovies (Result Http.Error (List Movie))
     | ToggleFavorite Int
     | SetFilter String
+    | LoadedFavorites (List Int) -- Message to receive favorites from local storage
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -83,10 +92,16 @@ update msg model =
                     else
                         id :: model.favorites
             in
-            ( { model | favorites = updatedFavorites }, Cmd.none )
+            ( { model | favorites = updatedFavorites }
+            , saveFavorites updatedFavorites -- Save updated favorites to local storage
+            )
 
         SetFilter filter ->
             ( { model | filter = filter }, Cmd.none )
+
+        LoadedFavorites loadedFavorites ->
+            -- This message is received once on startup from the subscription
+            ( { model | favorites = loadedFavorites }, Cmd.none )
 
 
 -- VIEW
@@ -177,4 +192,4 @@ movieDecoder =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    loadFavorites LoadedFavorites -- Subscribe to the incoming port

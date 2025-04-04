@@ -6157,10 +6157,14 @@ var $author$project$Main$init = function (_v0) {
 		{errorMessage: $elm$core$Maybe$Nothing, favorites: _List_Nil, filter: 'popular', isLoading: true, movies: _List_Nil},
 		$author$project$Main$getPopularMovies);
 };
-var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $author$project$Main$LoadedFavorites = function (a) {
+	return {$: 'LoadedFavorites', a: a};
+};
+var $author$project$Main$loadFavorites = _Platform_incomingPort(
+	'loadFavorites',
+	$elm$json$Json$Decode$list($elm$json$Json$Decode$int));
 var $author$project$Main$subscriptions = function (model) {
-	return $elm$core$Platform$Sub$none;
+	return $author$project$Main$loadFavorites($author$project$Main$LoadedFavorites);
 };
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
@@ -6206,6 +6210,19 @@ var $elm$core$List$member = F2(
 var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$json$Json$Encode$int = _Json_wrap;
+var $elm$json$Json$Encode$list = F2(
+	function (func, entries) {
+		return _Json_wrap(
+			A3(
+				$elm$core$List$foldl,
+				_Json_addEntry(func),
+				_Json_emptyArray(_Utils_Tuple0),
+				entries));
+	});
+var $author$project$Main$saveFavorites = _Platform_outgoingPort(
+	'saveFavorites',
+	$elm$json$Json$Encode$list($elm$json$Json$Encode$int));
 var $elm$core$Debug$toString = _Debug_toString;
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -6241,13 +6258,20 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{favorites: updatedFavorites}),
-					$elm$core$Platform$Cmd$none);
-			default:
+					$author$project$Main$saveFavorites(updatedFavorites));
+			case 'SetFilter':
 				var filter = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{filter: filter}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				var loadedFavorites = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{favorites: loadedFavorites}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});

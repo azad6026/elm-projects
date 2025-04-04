@@ -9,9 +9,39 @@
   <div id="elm-app"></div>
   <script src="elm.js"></script>
   <script>
-    Elm.Main.init({
+    var app = Elm.Main.init({
       node: document.getElementById('elm-app')
     });
+
+    // Handle saving favorites to localStorage when Elm sends them
+    app.ports.saveFavorites.subscribe(function(favorites) {
+      localStorage.setItem('favoriteMovies', JSON.stringify(favorites));
+    });
+
+    // Load favorites from localStorage on startup and send them to Elm
+    var storedFavorites = localStorage.getItem('favoriteMovies');
+    var initialFavorites = [];
+    if (storedFavorites) {
+      try {
+        initialFavorites = JSON.parse(storedFavorites);
+        // Basic validation: ensure it's an array of numbers
+        if (!Array.isArray(initialFavorites) || !initialFavorites.every(Number.isInteger)) {
+          console.error("Invalid data found in localStorage for favoriteMovies. Resetting.");
+          initialFavorites = [];
+          localStorage.removeItem('favoriteMovies');
+        }
+      } catch (e) {
+        console.error("Error parsing favoriteMovies from localStorage:", e);
+        initialFavorites = []; // Reset if parsing fails
+        localStorage.removeItem('favoriteMovies');
+      }
+    }
+    // Send the loaded (or default empty) list to the Elm app
+    // Use requestAnimationFrame to ensure the port is ready after init
+    requestAnimationFrame(function() {
+        app.ports.loadFavorites.send(initialFavorites);
+    });
+
   </script>
 </body>
 </html>
