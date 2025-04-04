@@ -94,10 +94,10 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [ style "display" "flex", style "flex-direction" "column" ]
-        [ div [ style "margin-bottom" "10px" ]
-              [ button [ Html.Events.onClick (SetFilter "popular") ] [ text "Popular" ]
-              , button [ Html.Events.onClick (SetFilter "favorites") ] [ text "Favorites" ]
+    div [ class "app-container" ]
+        [ div [ class "filter-buttons" ]
+              [ button [ class "filter-button", Html.Events.onClick (SetFilter "popular") ] [ text "Popular" ]
+              , button [ class "filter-button", Html.Events.onClick (SetFilter "favorites") ] [ text "Favorites" ]
               ]
         , if model.isLoading then
             text "Loading..."

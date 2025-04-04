@@ -6255,6 +6255,15 @@ var $author$project$Main$SetFilter = function (a) {
 	return {$: 'SetFilter', a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$Main$getFilteredMovies = function (model) {
 	var _v0 = model.filter;
@@ -6275,15 +6284,6 @@ var $author$project$Main$getFilteredMovies = function (model) {
 var $author$project$Main$ToggleFavorite = function (a) {
 	return {$: 'ToggleFavorite', a: a};
 };
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$figcaption = _VirtualDom_node('figcaption');
 var $elm$html$Html$figure = _VirtualDom_node('figure');
 var $elm$html$Html$img = _VirtualDom_node('img');
@@ -6366,8 +6366,7 @@ var $author$project$Main$view = function (model) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-				A2($elm$html$Html$Attributes$style, 'flex-direction', 'column')
+				$elm$html$Html$Attributes$class('app-container')
 			]),
 		_List_fromArray(
 			[
@@ -6375,7 +6374,7 @@ var $author$project$Main$view = function (model) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						A2($elm$html$Html$Attributes$style, 'margin-bottom', '10px')
+						$elm$html$Html$Attributes$class('filter-buttons')
 					]),
 				_List_fromArray(
 					[
@@ -6383,6 +6382,7 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
+								$elm$html$Html$Attributes$class('filter-button'),
 								$elm$html$Html$Events$onClick(
 								$author$project$Main$SetFilter('popular'))
 							]),
@@ -6394,6 +6394,7 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$button,
 						_List_fromArray(
 							[
+								$elm$html$Html$Attributes$class('filter-button'),
 								$elm$html$Html$Events$onClick(
 								$author$project$Main$SetFilter('favorites'))
 							]),
