@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elm Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="./elm.js"></script>
+</head>
+<body>
+    <div id="elm-app"></div>
+
+    <script>
+        // Wait for the DOM to be ready
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Initialize the Elm application
+            var app = Elm.Main.init({
+                node: document.getElementById('elm-app')
+            });
+
+            // --- Port Subscriptions (Elm -> JS) ---
+
+            // Receive data from Elm to save to localStorage
+            app.ports.saveExpenses.subscribe(function(expenses) {
+                localStorage.setItem('elm-expense-tracker-data', JSON.stringify(expenses));
+                console.log('Expenses saved to localStorage:', expenses);
+                // Optional: Send confirmation back to Elm if needed
+                // app.ports.storageResult.send(true);
+            });
+
+            // Receive request from Elm to clear localStorage
+            app.ports.clearExpenses.subscribe(function() {
+                localStorage.removeItem('elm-expense-tracker-data');
+                console.log('Expenses cleared from localStorage.');
+                 // Send null back to Elm to indicate data is cleared or doesn't exist
+                app.ports.loadExpensesReceiver.send(null);
+            });
+
+
+            // --- Port Commands (JS -> Elm) ---
+
+            // Send loaded data from localStorage to Elm when requested
+            app.ports.loadExpensesRequest.subscribe(function() {
+                const storedData = localStorage.getItem('elm-expense-tracker-data');
+                if (storedData) {
+                    try {
+                        const expenses = JSON.parse(storedData);
+                        console.log('Expenses loaded from localStorage:', expenses);
+                        app.ports.loadExpensesReceiver.send(expenses);
+                    } catch (e) {
+                        console.error('Error parsing expenses from localStorage:', e);
+                        // Send null if data is corrupted
+                        app.ports.loadExpensesReceiver.send(null);
+                        // Optionally clear corrupted data
+                        localStorage.removeItem('elm-expense-tracker-data');
+                    }
+                } else {
+                    console.log('No expenses found in localStorage.');
+                    // Send null if no data exists
+                    app.ports.loadExpensesReceiver.send(null);
+                }
+            });
+
+            // Initial load request when the app starts
+            // We need a small delay to ensure Elm ports are ready
+            setTimeout(() => {
+                app.ports.loadExpensesRequest.send(null); // Send null or any value to trigger the request
+            }, 50);
+
+            // Restrict input in the amount field to numbers and a decimal point
+            const amountInput = document.getElementById('amount');
+            const amountError = document.getElementById('amount-error'); // Get the error element
+
+            amountInput.addEventListener('input', function (event) {
+                const value = event.target.value;
+                const filteredValue = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); // Allow only numbers and one decimal point
+                event.target.value = filteredValue;
+
+                // Show error message if input is invalid
+                if (value !== filteredValue) {
+                    amountError.textContent = 'Please enter numbers only.';
+                } else {
+                    amountError.textContent = ''; // Clear error message
+                }
+            });
+        });
+    </script>
+    <div id="amount-error" style="color: red;"></div>
+</body>
+</html>
