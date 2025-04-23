@@ -72,19 +72,19 @@ sampleOptions =
     { options =
         [ { id = "option-1"
           , color = "Colour 1"
-          , imageUrl = "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg"
+          , imageUrl = "https://picsum.photos/600/400?random=78"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
           , selected = False
           }
         , { id = "option-2"
           , color = "Colour 2"
-          , imageUrl = "https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-2-v2.jpg"
+          , imageUrl = "https://picsum.photos/600/400?random=7"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
           , selected = True
           }
         , { id = "option-3"
           , color = "Colour 3"
-          , imageUrl = "https://bellroy-cms-images.imgix.net/2024-Bundles-homepage-subbanner-position-3.jpg"
+          , imageUrl = "https://picsum.photos/600/400?random=27"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
           , selected = False
           }
