@@ -4953,182 +4953,7 @@ function _Browser_load(url)
 		}
 	}));
 }
-
-
-
-// SEND REQUEST
-
-var _Http_toTask = F3(function(router, toTask, request)
-{
-	return _Scheduler_binding(function(callback)
-	{
-		function done(response) {
-			callback(toTask(request.expect.a(response)));
-		}
-
-		var xhr = new XMLHttpRequest();
-		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
-		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.expect.b, xhr)); });
-		$elm$core$Maybe$isJust(request.tracker) && _Http_track(router, xhr, request.tracker.a);
-
-		try {
-			xhr.open(request.method, request.url, true);
-		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.url));
-		}
-
-		_Http_configureRequest(xhr, request);
-
-		request.body.a && xhr.setRequestHeader('Content-Type', request.body.a);
-		xhr.send(request.body.b);
-
-		return function() { xhr.c = true; xhr.abort(); };
-	});
-});
-
-
-// CONFIGURE
-
-function _Http_configureRequest(xhr, request)
-{
-	for (var headers = request.headers; headers.b; headers = headers.b) // WHILE_CONS
-	{
-		xhr.setRequestHeader(headers.a.a, headers.a.b);
-	}
-	xhr.timeout = request.timeout.a || 0;
-	xhr.responseType = request.expect.d;
-	xhr.withCredentials = request.allowCookiesFromOtherDomains;
-}
-
-
-// RESPONSES
-
-function _Http_toResponse(toBody, xhr)
-{
-	return A2(
-		200 <= xhr.status && xhr.status < 300 ? $elm$http$Http$GoodStatus_ : $elm$http$Http$BadStatus_,
-		_Http_toMetadata(xhr),
-		toBody(xhr.response)
-	);
-}
-
-
-// METADATA
-
-function _Http_toMetadata(xhr)
-{
-	return {
-		url: xhr.responseURL,
-		statusCode: xhr.status,
-		statusText: xhr.statusText,
-		headers: _Http_parseHeaders(xhr.getAllResponseHeaders())
-	};
-}
-
-
-// HEADERS
-
-function _Http_parseHeaders(rawHeaders)
-{
-	if (!rawHeaders)
-	{
-		return $elm$core$Dict$empty;
-	}
-
-	var headers = $elm$core$Dict$empty;
-	var headerPairs = rawHeaders.split('\r\n');
-	for (var i = headerPairs.length; i--; )
-	{
-		var headerPair = headerPairs[i];
-		var index = headerPair.indexOf(': ');
-		if (index > 0)
-		{
-			var key = headerPair.substring(0, index);
-			var value = headerPair.substring(index + 2);
-
-			headers = A3($elm$core$Dict$update, key, function(oldValue) {
-				return $elm$core$Maybe$Just($elm$core$Maybe$isJust(oldValue)
-					? value + ', ' + oldValue.a
-					: value
-				);
-			}, headers);
-		}
-	}
-	return headers;
-}
-
-
-// EXPECT
-
-var _Http_expect = F3(function(type, toBody, toValue)
-{
-	return {
-		$: 0,
-		d: type,
-		b: toBody,
-		a: toValue
-	};
-});
-
-var _Http_mapExpect = F2(function(func, expect)
-{
-	return {
-		$: 0,
-		d: expect.d,
-		b: expect.b,
-		a: function(x) { return func(expect.a(x)); }
-	};
-});
-
-function _Http_toDataView(arrayBuffer)
-{
-	return new DataView(arrayBuffer);
-}
-
-
-// BODY and PARTS
-
-var _Http_emptyBody = { $: 0 };
-var _Http_pair = F2(function(a, b) { return { $: 0, a: a, b: b }; });
-
-function _Http_toFormData(parts)
-{
-	for (var formData = new FormData(); parts.b; parts = parts.b) // WHILE_CONS
-	{
-		var part = parts.a;
-		formData.append(part.a, part.b);
-	}
-	return formData;
-}
-
-var _Http_bytesToBlob = F2(function(mime, bytes)
-{
-	return new Blob([bytes], { type: mime });
-});
-
-
-// PROGRESS
-
-function _Http_track(router, xhr, tracker)
-{
-	// TODO check out lengthComputable on loadstart event
-
-	xhr.upload.addEventListener('progress', function(event) {
-		if (xhr.c) { return; }
-		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			sent: event.loaded,
-			size: event.total
-		}))));
-	});
-	xhr.addEventListener('progress', function(event) {
-		if (xhr.c) { return; }
-		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			received: event.loaded,
-			size: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
-		}))));
-	});
-}var $elm$core$Basics$EQ = {$: 'EQ'};
+var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$List$cons = _List_cons;
@@ -10729,426 +10554,85 @@ var $elm$core$Basics$never = function (_v0) {
 	}
 };
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$FeaturedBanners$Loading = {$: 'Loading'};
-var $author$project$FeaturedBanners$GotFeaturedBanners = function (a) {
-	return {$: 'GotFeaturedBanners', a: a};
-};
-var $author$project$FeaturedBanners$Banners = function (banners) {
-	return {banners: banners};
-};
-var $author$project$FeaturedBanners$Banner = F8(
-	function (id, href, target, imageUrl, imageSizes, srcset, title, linkText) {
-		return {href: href, id: id, imageSizes: imageSizes, imageUrl: imageUrl, linkText: linkText, srcset: srcset, target: target, title: title};
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
 	});
-var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom = $elm$json$Json$Decode$map2($elm$core$Basics$apR);
-var $elm$json$Json$Decode$andThen = _Json_andThen;
-var $elm$json$Json$Decode$null = _Json_decodeNull;
-var $elm$json$Json$Decode$oneOf = _Json_oneOf;
-var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optionalDecoder = F3(
-	function (path, valDecoder, fallback) {
-		var nullOr = function (decoder) {
-			return $elm$json$Json$Decode$oneOf(
-				_List_fromArray(
-					[
-						decoder,
-						$elm$json$Json$Decode$null(fallback)
-					]));
-		};
-		var handleResult = function (input) {
-			var _v0 = A2(
-				$elm$json$Json$Decode$decodeValue,
-				A2($elm$json$Json$Decode$at, path, $elm$json$Json$Decode$value),
-				input);
-			if (_v0.$ === 'Ok') {
-				var rawValue = _v0.a;
-				var _v1 = A2(
-					$elm$json$Json$Decode$decodeValue,
-					nullOr(valDecoder),
-					rawValue);
-				if (_v1.$ === 'Ok') {
-					var finalResult = _v1.a;
-					return $elm$json$Json$Decode$succeed(finalResult);
-				} else {
-					return A2(
-						$elm$json$Json$Decode$at,
-						path,
-						nullOr(valDecoder));
-				}
-			} else {
-				return $elm$json$Json$Decode$succeed(fallback);
-			}
-		};
-		return A2($elm$json$Json$Decode$andThen, handleResult, $elm$json$Json$Decode$value);
-	});
-var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional = F4(
-	function (key, valDecoder, fallback, decoder) {
-		return A2(
-			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom,
-			A3(
-				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optionalDecoder,
-				_List_fromArray(
-					[key]),
-				valDecoder,
-				fallback),
-			decoder);
-	});
-var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required = F3(
-	function (key, valDecoder, decoder) {
-		return A2(
-			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom,
-			A2($elm$json$Json$Decode$field, key, valDecoder),
-			decoder);
-	});
-var $author$project$FeaturedBanners$bannerDecoder = A4(
-	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
-	'linkText',
-	$elm$json$Json$Decode$string,
-	'Read more',
-	A3(
-		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-		'title',
-		$elm$json$Json$Decode$string,
-		A3(
-			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-			'srcset',
-			$elm$json$Json$Decode$string,
-			A3(
-				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-				'imageSizes',
-				$elm$json$Json$Decode$string,
-				A3(
-					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-					'imageUrl',
-					$elm$json$Json$Decode$string,
-					A3(
-						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-						'target',
-						$elm$json$Json$Decode$string,
-						A3(
-							$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-							'href',
-							$elm$json$Json$Decode$string,
-							A3(
-								$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-								'id',
-								$elm$json$Json$Decode$string,
-								$elm$json$Json$Decode$succeed($author$project$FeaturedBanners$Banner)))))))));
-var $author$project$FeaturedBanners$bannersDecoder = A2(
-	$elm$json$Json$Decode$map,
-	$author$project$FeaturedBanners$Banners,
-	A2(
-		$elm$json$Json$Decode$field,
-		'banners',
-		$elm$json$Json$Decode$list($author$project$FeaturedBanners$bannerDecoder)));
-var $elm$http$Http$BadStatus_ = F2(
-	function (a, b) {
-		return {$: 'BadStatus_', a: a, b: b};
-	});
-var $elm$http$Http$BadUrl_ = function (a) {
-	return {$: 'BadUrl_', a: a};
-};
-var $elm$http$Http$GoodStatus_ = F2(
-	function (a, b) {
-		return {$: 'GoodStatus_', a: a, b: b};
-	});
-var $elm$http$Http$NetworkError_ = {$: 'NetworkError_'};
-var $elm$http$Http$Receiving = function (a) {
-	return {$: 'Receiving', a: a};
-};
-var $elm$http$Http$Sending = function (a) {
-	return {$: 'Sending', a: a};
-};
-var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
-var $elm$core$Maybe$isJust = function (maybe) {
-	if (maybe.$ === 'Just') {
-		return true;
+var $author$project$ProductOptions$getInitialSelectedOptionId = function (options) {
+	var _v0 = A2(
+		$elm$core$List$filter,
+		function (option) {
+			return option.selected;
+		},
+		options);
+	if (_v0.b && (!_v0.b.b)) {
+		var option = _v0.a;
+		return option.id;
 	} else {
-		return false;
+		return 'option-1';
 	}
 };
-var $elm$core$Platform$sendToSelf = _Platform_sendToSelf;
-var $elm$http$Http$expectStringResponse = F2(
-	function (toMsg, toResult) {
-		return A3(
-			_Http_expect,
-			'',
-			$elm$core$Basics$identity,
-			A2($elm$core$Basics$composeR, toResult, toMsg));
-	});
-var $elm$core$Result$mapError = F2(
-	function (f, result) {
-		if (result.$ === 'Ok') {
-			var v = result.a;
-			return $elm$core$Result$Ok(v);
-		} else {
-			var e = result.a;
-			return $elm$core$Result$Err(
-				f(e));
-		}
-	});
-var $elm$http$Http$BadBody = function (a) {
-	return {$: 'BadBody', a: a};
+var $author$project$ProductOptions$sampleOptions = {
+	options: _List_fromArray(
+		[
+			{color: 'Colour 1', id: 'option-1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrl: 'https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg', selected: false},
+			{color: 'Colour 2', id: 'option-2', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrl: 'https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-2-v2.jpg', selected: true},
+			{color: 'Colour 3', id: 'option-3', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrl: 'https://bellroy-cms-images.imgix.net/2024-Bundles-homepage-subbanner-position-3.jpg', selected: false}
+		])
 };
-var $elm$http$Http$BadStatus = function (a) {
-	return {$: 'BadStatus', a: a};
-};
-var $elm$http$Http$BadUrl = function (a) {
-	return {$: 'BadUrl', a: a};
-};
-var $elm$http$Http$NetworkError = {$: 'NetworkError'};
-var $elm$http$Http$Timeout = {$: 'Timeout'};
-var $elm$http$Http$resolve = F2(
-	function (toResult, response) {
-		switch (response.$) {
-			case 'BadUrl_':
-				var url = response.a;
-				return $elm$core$Result$Err(
-					$elm$http$Http$BadUrl(url));
-			case 'Timeout_':
-				return $elm$core$Result$Err($elm$http$Http$Timeout);
-			case 'NetworkError_':
-				return $elm$core$Result$Err($elm$http$Http$NetworkError);
-			case 'BadStatus_':
-				var metadata = response.a;
-				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.statusCode));
-			default:
-				var body = response.b;
-				return A2(
-					$elm$core$Result$mapError,
-					$elm$http$Http$BadBody,
-					toResult(body));
-		}
-	});
-var $elm$http$Http$expectJson = F2(
-	function (toMsg, decoder) {
-		return A2(
-			$elm$http$Http$expectStringResponse,
-			toMsg,
-			$elm$http$Http$resolve(
-				function (string) {
-					return A2(
-						$elm$core$Result$mapError,
-						$elm$json$Json$Decode$errorToString,
-						A2($elm$json$Json$Decode$decodeString, decoder, string));
-				}));
-	});
-var $elm$http$Http$emptyBody = _Http_emptyBody;
-var $elm$http$Http$Request = function (a) {
-	return {$: 'Request', a: a};
-};
-var $elm$http$Http$State = F2(
-	function (reqs, subs) {
-		return {reqs: reqs, subs: subs};
-	});
-var $elm$http$Http$init = $elm$core$Task$succeed(
-	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
-var $elm$core$Process$kill = _Scheduler_kill;
-var $elm$core$Process$spawn = _Scheduler_spawn;
-var $elm$http$Http$updateReqs = F3(
-	function (router, cmds, reqs) {
-		updateReqs:
-		while (true) {
-			if (!cmds.b) {
-				return $elm$core$Task$succeed(reqs);
-			} else {
-				var cmd = cmds.a;
-				var otherCmds = cmds.b;
-				if (cmd.$ === 'Cancel') {
-					var tracker = cmd.a;
-					var _v2 = A2($elm$core$Dict$get, tracker, reqs);
-					if (_v2.$ === 'Nothing') {
-						var $temp$router = router,
-							$temp$cmds = otherCmds,
-							$temp$reqs = reqs;
-						router = $temp$router;
-						cmds = $temp$cmds;
-						reqs = $temp$reqs;
-						continue updateReqs;
-					} else {
-						var pid = _v2.a;
-						return A2(
-							$elm$core$Task$andThen,
-							function (_v3) {
-								return A3(
-									$elm$http$Http$updateReqs,
-									router,
-									otherCmds,
-									A2($elm$core$Dict$remove, tracker, reqs));
-							},
-							$elm$core$Process$kill(pid));
-					}
-				} else {
-					var req = cmd.a;
-					return A2(
-						$elm$core$Task$andThen,
-						function (pid) {
-							var _v4 = req.tracker;
-							if (_v4.$ === 'Nothing') {
-								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
-							} else {
-								var tracker = _v4.a;
-								return A3(
-									$elm$http$Http$updateReqs,
-									router,
-									otherCmds,
-									A3($elm$core$Dict$insert, tracker, pid, reqs));
-							}
-						},
-						$elm$core$Process$spawn(
-							A3(
-								_Http_toTask,
-								router,
-								$elm$core$Platform$sendToApp(router),
-								req)));
-				}
-			}
-		}
-	});
-var $elm$http$Http$onEffects = F4(
-	function (router, cmds, subs, state) {
-		return A2(
-			$elm$core$Task$andThen,
-			function (reqs) {
-				return $elm$core$Task$succeed(
-					A2($elm$http$Http$State, reqs, subs));
-			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.reqs));
-	});
-var $elm$http$Http$maybeSend = F4(
-	function (router, desiredTracker, progress, _v0) {
-		var actualTracker = _v0.a;
-		var toMsg = _v0.b;
-		return _Utils_eq(desiredTracker, actualTracker) ? $elm$core$Maybe$Just(
-			A2(
-				$elm$core$Platform$sendToApp,
-				router,
-				toMsg(progress))) : $elm$core$Maybe$Nothing;
-	});
-var $elm$http$Http$onSelfMsg = F3(
-	function (router, _v0, state) {
-		var tracker = _v0.a;
-		var progress = _v0.b;
-		return A2(
-			$elm$core$Task$andThen,
-			function (_v1) {
-				return $elm$core$Task$succeed(state);
-			},
-			$elm$core$Task$sequence(
-				A2(
-					$elm$core$List$filterMap,
-					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.subs)));
-	});
-var $elm$http$Http$Cancel = function (a) {
-	return {$: 'Cancel', a: a};
-};
-var $elm$http$Http$cmdMap = F2(
-	function (func, cmd) {
-		if (cmd.$ === 'Cancel') {
-			var tracker = cmd.a;
-			return $elm$http$Http$Cancel(tracker);
-		} else {
-			var r = cmd.a;
-			return $elm$http$Http$Request(
-				{
-					allowCookiesFromOtherDomains: r.allowCookiesFromOtherDomains,
-					body: r.body,
-					expect: A2(_Http_mapExpect, func, r.expect),
-					headers: r.headers,
-					method: r.method,
-					timeout: r.timeout,
-					tracker: r.tracker,
-					url: r.url
-				});
-		}
-	});
-var $elm$http$Http$MySub = F2(
-	function (a, b) {
-		return {$: 'MySub', a: a, b: b};
-	});
-var $elm$http$Http$subMap = F2(
-	function (func, _v0) {
-		var tracker = _v0.a;
-		var toMsg = _v0.b;
-		return A2(
-			$elm$http$Http$MySub,
-			tracker,
-			A2($elm$core$Basics$composeR, toMsg, func));
-	});
-_Platform_effectManagers['Http'] = _Platform_createManager($elm$http$Http$init, $elm$http$Http$onEffects, $elm$http$Http$onSelfMsg, $elm$http$Http$cmdMap, $elm$http$Http$subMap);
-var $elm$http$Http$command = _Platform_leaf('Http');
-var $elm$http$Http$subscription = _Platform_leaf('Http');
-var $elm$http$Http$request = function (r) {
-	return $elm$http$Http$command(
-		$elm$http$Http$Request(
-			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
-};
-var $elm$http$Http$get = function (r) {
-	return $elm$http$Http$request(
-		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
-};
-var $author$project$FeaturedBanners$httpRequest = $elm$http$Http$get(
-	{
-		expect: A2($elm$http$Http$expectJson, $author$project$FeaturedBanners$GotFeaturedBanners, $author$project$FeaturedBanners$bannersDecoder),
-		url: '/elm/featured-banners.json'
-	});
-var $author$project$FeaturedBanners$init = function (_v0) {
-	return _Utils_Tuple2($author$project$FeaturedBanners$Loading, $author$project$FeaturedBanners$httpRequest);
+var $author$project$ProductOptions$init = function (_v0) {
+	return _Utils_Tuple2(
+		{
+			options: $author$project$ProductOptions$sampleOptions,
+			selectedOptionId: $author$project$ProductOptions$getInitialSelectedOptionId($author$project$ProductOptions$sampleOptions.options)
+		},
+		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$FeaturedBanners$Fail = function (a) {
-	return {$: 'Fail', a: a};
-};
-var $author$project$FeaturedBanners$Success = function (a) {
-	return {$: 'Success', a: a};
-};
-var $author$project$FeaturedBanners$update = F2(
+var $author$project$ProductOptions$update = F2(
 	function (msg, model) {
-		var result = msg.a;
-		if (result.$ === 'Ok') {
-			var banners = result.a;
-			return _Utils_Tuple2(
-				$author$project$FeaturedBanners$Success(banners),
-				$elm$core$Platform$Cmd$none);
-		} else {
-			var error = result.a;
-			return _Utils_Tuple2(
-				$author$project$FeaturedBanners$Fail(error),
-				$elm$core$Platform$Cmd$none);
-		}
+		var id = msg.a;
+		var selectedOptions = A2(
+			$elm$core$List$map,
+			function (option) {
+				return _Utils_eq(option.id, id) ? _Utils_update(
+					option,
+					{selected: true}) : _Utils_update(
+					option,
+					{selected: false});
+			},
+			model.options.options);
+		var updatedOptions = {options: selectedOptions};
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{options: updatedOptions, selectedOptionId: id}),
+			$elm$core$Platform$Cmd$none);
 	});
-var $author$project$FeaturedBanners$errorMessage = function (error) {
-	switch (error.$) {
-		case 'BadUrl':
-			var url = error.a;
-			return 'The URL ' + (url + ' was invalid');
-		case 'Timeout':
-			return 'Timeout, Unable to reach the server, try again';
-		case 'NetworkError':
-			return 'Unable to reach the server, try again';
-		case 'BadStatus':
-			switch (error.a) {
-				case 500:
-					return 'Server error';
-				case 400:
-					return 'Bad request';
-				case 404:
-					return 'Not found';
-				default:
-					return 'Bad status';
-			}
-		default:
-			var body = error.a;
-			return 'Bad body: ' + body;
-	}
-};
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
-var $elm$html$Html$figcaption = _VirtualDom_node('figcaption');
-var $elm$html$Html$figure = _VirtualDom_node('figure');
-var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $author$project$ProductOptions$getSelectedImage = function (options) {
+	var _v0 = A2(
+		$elm$core$List$filter,
+		function (option) {
+			return option.selected;
+		},
+		options);
+	if (_v0.b && (!_v0.b.b)) {
+		var option = _v0.a;
+		return {color: option.color, imageSizes: option.imageSizes, imageUrl: option.imageUrl};
+	} else {
+		return {color: 'Colour 1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrl: 'https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg'};
+	}
+};
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
@@ -11156,101 +10640,92 @@ var $elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $author$project$FeaturedBanners$viewBanner = function (banner) {
+var $author$project$ProductOptions$ChangedSelection = function (a) {
+	return {$: 'ChangedSelection', a: a};
+};
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$checked = $elm$html$Html$Attributes$boolProperty('checked');
+var $elm$html$Html$label = _VirtualDom_node('label');
+var $elm$html$Html$Attributes$name = $elm$html$Html$Attributes$stringProperty('name');
+var $author$project$ProductOptions$viewOption = F2(
+	function (selectedId, option) {
+		var isChecked = _Utils_eq(selectedId, option.id);
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$label,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('option-label')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(option.color),
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$type_('radio'),
+									$elm$html$Html$Attributes$name('option'),
+									$elm$html$Html$Attributes$value(option.id),
+									$elm$html$Html$Attributes$checked(isChecked),
+									$elm$html$Html$Events$onInput($author$project$ProductOptions$ChangedSelection)
+								]),
+							_List_Nil)
+						]))
+				]));
+	});
+var $author$project$ProductOptions$view = function (model) {
+	var option = $author$project$ProductOptions$getSelectedImage(model.options.options);
 	return A2(
-		$elm$html$Html$figure,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('featured-banner')
-			]),
+		$elm$html$Html$div,
+		_List_Nil,
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$img,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('featured-banner-image'),
-						$elm$html$Html$Attributes$src(banner.imageUrl),
-						A2($elm$html$Html$Attributes$attribute, 'srcset', banner.srcset),
-						A2($elm$html$Html$Attributes$attribute, 'sizes', banner.imageSizes),
-						A2($elm$html$Html$Attributes$attribute, 'loadding', 'lazy'),
-						$elm$html$Html$Attributes$alt(banner.title)
-					]),
-				_List_Nil),
+				$elm$html$Html$div,
+				_List_Nil,
 				A2(
-				$elm$html$Html$figcaption,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('featured-banner-text')
-					]),
+					$elm$core$List$map,
+					$author$project$ProductOptions$viewOption(model.selectedOptionId),
+					model.options.options)),
+				A2(
+				$elm$html$Html$div,
+				_List_Nil,
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$h3,
+						$elm$html$Html$img,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('featured-banner-title')
+								$elm$html$Html$Attributes$class('option-image'),
+								$elm$html$Html$Attributes$src(option.imageUrl),
+								A2($elm$html$Html$Attributes$attribute, 'sizes', option.imageSizes),
+								A2($elm$html$Html$Attributes$attribute, 'loading', 'lazy'),
+								$elm$html$Html$Attributes$alt(option.color)
 							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(banner.title)
-							])),
-						A2(
-						$elm$html$Html$a,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('featured-banner-link'),
-								$elm$html$Html$Attributes$href(banner.href)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(banner.linkText)
-							]))
+						_List_Nil)
 					]))
 			]));
 };
-var $author$project$FeaturedBanners$viewBanners = function (data) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('featured-banners')
-			]),
-		A2($elm$core$List$map, $author$project$FeaturedBanners$viewBanner, data.banners));
-};
-var $author$project$FeaturedBanners$view = function (model) {
-	switch (model.$) {
-		case 'Loading':
-			return A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Loading banners ...')
-					]));
-		case 'Success':
-			var data = model.a;
-			return $author$project$FeaturedBanners$viewBanners(data);
-		default:
-			var error = model.a;
-			return A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$author$project$FeaturedBanners$errorMessage(error))
-					]));
-	}
-};
-var $author$project$FeaturedBanners$main = $elm$browser$Browser$element(
+var $author$project$ProductOptions$main = $elm$browser$Browser$element(
 	{
-		init: $author$project$FeaturedBanners$init,
+		init: $author$project$ProductOptions$init,
 		subscriptions: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
-		update: $author$project$FeaturedBanners$update,
-		view: $author$project$FeaturedBanners$view
+		update: $author$project$ProductOptions$update,
+		view: $author$project$ProductOptions$view
 	});
-_Platform_export({'FeaturedBanners':{'init':$author$project$FeaturedBanners$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"FeaturedBanners.Msg","aliases":{"FeaturedBanners.Banner":{"args":[],"type":"{ id : String.String, href : String.String, target : String.String, imageUrl : String.String, imageSizes : String.String, srcset : String.String, title : String.String, linkText : String.String }"},"FeaturedBanners.Banners":{"args":[],"type":"{ banners : List.List FeaturedBanners.Banner }"}},"unions":{"FeaturedBanners.Msg":{"args":[],"tags":{"GotFeaturedBanners":["Result.Result Http.Error FeaturedBanners.Banners"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"List.List":{"args":["a"],"tags":{}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}},"Basics.Int":{"args":[],"tags":{"Int":[]}}}}})}});}(this));
+_Platform_export({'ProductOptions':{'init':$author$project$ProductOptions$main(
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"ProductOptions.Msg","aliases":{},"unions":{"ProductOptions.Msg":{"args":[],"tags":{"ChangedSelection":["String.String"]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));

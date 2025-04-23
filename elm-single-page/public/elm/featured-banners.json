@@ -60,5 +60,31 @@
             "title": "Ready when you are",
             "linkText": "Shop Venture >"
         }
+    ],
+    "options": [
+        {
+            "id": "option-1",
+            "color": "Colour 1",
+            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageSizes": "(min-width: 768px) 50vw, 100vw"
+        },
+        {
+            "id": "option-2",
+            "color": "Colour 2",
+            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageSizes": "(min-width: 768px) 50vw, 100vw"
+        },
+        {
+            "id": "option-3",
+            "color": "Colour 3",
+            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageSizes": "(min-width: 768px) 50vw, 100vw"
+        },
+        {
+            "id": "option-4",
+            "color": "Colour 4",
+            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageSizes": "(min-width: 768px) 50vw, 100vw"
+        }
     ]
 }

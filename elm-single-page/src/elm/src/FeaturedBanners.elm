@@ -146,13 +146,15 @@ viewBanner banner =
             , alt banner.title
             ]
             []
-        , h3 [ class "featured-banner-title" ]
-            [ text banner.title ]
-        , a
-            [ class "featured-banner-link"
-            , href banner.href
+        , figcaption [ class "featured-banner-text" ]
+            [ h3 [ class "featured-banner-title" ]
+                [ text banner.title ]
+            , a
+                [ class "featured-banner-link"
+                , href banner.href
+                ]
+                [ text banner.linkText ]
             ]
-            [ text banner.linkText ]
         ]
 
 
