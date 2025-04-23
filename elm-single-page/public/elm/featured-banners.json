@@ -1,89 +1,89 @@
 {
     "banners": [
         {
-            "id": "landing-page-collection-for-tech-lovers-1",
-            "href": "https://bellroy.com/collection/for-tech-lovers",
+            "id": "banner-1",
+            "href": "/",
             "target": "_blank",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageUrl": "https://picsum.photos/1300/700?random=1",
             "imageSizes": "(min-width: 768px) 50vw, 100vw",
-            "srcset": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg?auto=format&fit=max&w=400 400w, https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg?auto=format&fit=max&w=800 800w, https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg?auto=format&fit=max&w=1000 1000w, https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg?auto=format&fit=max&w=1300 1300w",
-            "title": "The latest tech, covered.",
-            "linkText": "Shop the tech collection >"
+            "srcset": "https://picsum.photos/400/215?random=1 400w, https://picsum.photos/800/430?random=1 800w, https://picsum.photos/1000/540?random=1 1000w, https://picsum.photos/1300/700?random=1 1300w",
+            "title": "Heading title 1",
+            "linkText": "Link to this collection"
         },
         {
-            "id": "landing-page-collection-laneway-1",
-            "href": "https://bellroy.com/collection/laneway",
+            "id": "banner-2",
+            "href": "/",
             "target": "_blank",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-2-v2.jpg",
+            "imageUrl": "https://picsum.photos/1300/700?random=2",
             "imageSizes": "(min-width: 768px) 50vw, 100vw",
-            "srcset": "https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-2-v2.jpg?auto=format&fit=max&w=400 400w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-2-v2.jpg?auto=format&fit=max&w=800 800w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-2-v2.jpg?auto=format&fit=max&w=1000 1000w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-2-v2.jpg?auto=format&fit=max&w=1300 1300w",
-            "title": "A new collection for the street savvy",
-            "linkText": "Explore Laneway >"
+            "srcset": "https://picsum.photos/400/215?random=2 400w, https://picsum.photos/800/430?random=2 800w, https://picsum.photos/1000/540?random=2 1000w, https://picsum.photos/1300/700?random=2 1300w",
+            "title": "Heading title 2",
+            "linkText": "Link to this collection"
         },
         {
-            "id": "landing-page-bundles-1",
-            "href": "https://bellroy.com/bundles",
+            "id": "banner-3",
+            "href": "/",
             "target": "_blank",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Bundles-homepage-subbanner-position-3.jpg",
+            "imageUrl": "https://picsum.photos/1300/700?random=3",
             "imageSizes": "(min-width: 768px) 50vw, 100vw",
-            "srcset": "https://bellroy-cms-images.imgix.net/2024-Bundles-homepage-subbanner-position-3.jpg?auto=format&fit=max&w=400 400w, https://bellroy-cms-images.imgix.net/2024-Bundles-homepage-subbanner-position-3.jpg?auto=format&fit=max&w=800 800w, https://bellroy-cms-images.imgix.net/2024-Bundles-homepage-subbanner-position-3.jpg?auto=format&fit=max&w=1000 1000w, https://bellroy-cms-images.imgix.net/2024-Bundles-homepage-subbanner-position-3.jpg?auto=format&fit=max&w=1300 1300w",
-            "title": "Because they're better together",
-            "linkText": "Shop Value Sets >"
+            "srcset": "https://picsum.photos/400/215?random=3 400w, https://picsum.photos/800/430?random=3 800w, https://picsum.photos/1000/540?random=3 1000w, https://picsum.photos/1300/700?random=3 1300w",
+            "title": "Heading title 3",
+            "linkText": "Link to this collection"
         },
         {
-            "id": "landing-page-collection-lite-1",
-            "href": "https://bellroy.comcollection/lite",
+            "id": "banner-4",
+            "href": "/",
             "target": "_blank",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-1.jpg",
+            "imageUrl": "https://picsum.photos/1300/700?random=4",
             "imageSizes": "(min-width: 768px) 50vw, 100vw",
-            "srcset": "https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-1.jpg?auto=format&fit=max&w=400 400w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-1.jpg?auto=format&fit=max&w=800 800w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-1.jpg?auto=format&fit=max&w=1000 1000w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-1.jpg?auto=format&fit=max&w=1300 1300w",
-            "title": "3x lighter",
-            "linkText": "Shop the Lite collection >"
+            "srcset": "https://picsum.photos/400/215?random=4 400w, https://picsum.photos/800/430?random=4 800w, https://picsum.photos/1000/540?random=4 1000w, https://picsum.photos/1300/700?random=4 1300w",
+            "title": "Heading title 4",
+            "linkText": "Link to this collection"
         },
         {
-            "id": "landing-page-collection-tokyo-1",
-            "href": "https://bellroy.com/collection/tokyo",
+            "id": "banner-5",
+            "href": "/",
             "target": "_blank",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2025-campaign-homepage-subbanner-tokyo_D2.jpg",
+            "imageUrl": "https://picsum.photos/1300/700?random=5",
             "imageSizes": "(min-width: 768px) 50vw, 100vw",
-            "srcset": "https://bellroy-cms-images.imgix.net/2025-campaign-homepage-subbanner-tokyo_D2.jpg?auto=format&fit=max&w=400 400w, https://bellroy-cms-images.imgix.net/2025-campaign-homepage-subbanner-tokyo_D2.jpg?auto=format&fit=max&w=800 800w, https://bellroy-cms-images.imgix.net/2025-campaign-homepage-subbanner-tokyo_D2.jpg?auto=format&fit=max&w=1000 1000w, https://bellroy-cms-images.imgix.net/2025-campaign-homepage-subbanner-tokyo_D2.jpg?auto=format&fit=max&w=1300 1300w",
-            "title": "Sleek, organized, streamlined",
-            "linkText": "Shop the Tokyo Collection >"
+            "srcset": "https://picsum.photos/400/215?random=5 400w, https://picsum.photos/800/430?random=5 800w, https://picsum.photos/1000/540?random=5 1000w, https://picsum.photos/1300/700?random=5 1300w",
+            "title": "Heading title 5",
+            "linkText": "Link to this collection"
         },
         {
-            "id": "landing-page-collection-venture-1",
-            "href": "https://bellroy.com/collection/venture",
+            "id": "banner-6",
+            "href": "/",
             "target": "_blank",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-v2-postion-6.jpg",
+            "imageUrl": "https://picsum.photos/1300/700?random=6",
             "imageSizes": "(min-width: 768px) 50vw, 100vw",
-            "srcset": "https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-v2-postion-6.jpg?auto=format&fit=max&w=400 400w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-v2-postion-6.jpg?auto=format&fit=max&w=800 800w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-v2-postion-6.jpg?auto=format&fit=max&w=1000 1000w, https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-v2-postion-6.jpg?auto=format&fit=max&w=1300 1300w",
-            "title": "Ready when you are",
-            "linkText": "Shop Venture >"
+            "srcset": "https://picsum.photos/400/215?random=6 400w, https://picsum.photos/800/430?random=6 800w, https://picsum.photos/1000/540?random=6 1000w, https://picsum.photos/1300/700?random=6 1300w",
+            "title": "Heading title 6",
+            "linkText": "Link to this collection"
         }
     ],
     "options": [
         {
             "id": "option-1",
             "color": "Colour 1",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageUrl": "https://picsum.photos/600/400?random=7",
             "imageSizes": "(min-width: 768px) 50vw, 100vw"
         },
         {
             "id": "option-2",
             "color": "Colour 2",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageUrl": "https://picsum.photos/600/400?random=8",
             "imageSizes": "(min-width: 768px) 50vw, 100vw"
         },
         {
             "id": "option-3",
             "color": "Colour 3",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageUrl": "https://picsum.photos/600/400?random=9",
             "imageSizes": "(min-width: 768px) 50vw, 100vw"
         },
         {
             "id": "option-4",
             "color": "Colour 4",
-            "imageUrl": "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg",
+            "imageUrl": "https://picsum.photos/600/400?random=10",
             "imageSizes": "(min-width: 768px) 50vw, 100vw"
         }
     ]
