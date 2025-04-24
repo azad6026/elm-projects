@@ -11,25 +11,6 @@ import Html.Events exposing (..)
 -- Main
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( { options = sampleOptions
-      , selectedOptionId = getInitialSelectedOptionId sampleOptions.options
-      }
-    , Cmd.none
-    )
-
-
-getInitialSelectedOptionId : List Option -> String
-getInitialSelectedOptionId options =
-    case List.filter (\option -> option.selected) options of
-        [ option ] ->
-            option.id
-
-        _ ->
-            "option-1"
-
-
 main : Program () Model Msg
 main =
     Browser.element
@@ -40,6 +21,16 @@ main =
         }
 
 
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( { options = sampleOptions
+      , selectedOptionId = getInitialSelectedOptionId sampleOptions.options
+      , selectedImageUrl = getSelectedOption sampleOptions.options |> .imageUrlOuter
+      }
+    , Cmd.none
+    )
+
+
 
 -- Model
 
@@ -47,15 +38,18 @@ main =
 type alias Model =
     { options : Options
     , selectedOptionId : String
+    , selectedImageUrl : String
     }
 
 
 type Msg
     = ChangedSelection String
+    | ToggledImage String String
 
 
 type alias Options =
-    { options : List Option }
+    { options : List Option
+    }
 
 
 type alias Option =
@@ -66,6 +60,10 @@ type alias Option =
     , imageSizes : String
     , selected : Bool
     }
+
+
+
+--  Sample Api
 
 
 sampleOptions : Options
@@ -105,6 +103,9 @@ update msg model =
     case msg of
         ChangedSelection id ->
             let
+                selectedOption =
+                    getSelectedItem id
+
                 selectedOptions =
                     List.map
                         (\option ->
@@ -120,11 +121,23 @@ update msg model =
                     { options = selectedOptions }
             in
             ( { model
-                | selectedOptionId = id
+                | selectedOptionId = selectedOption.id
                 , options = updatedOptions
+                , selectedImageUrl = selectedOption.imageUrlOuter
               }
             , Cmd.none
             )
+
+        ToggledImage id imageUrl ->
+            let
+                selectedOption =
+                    getSelectedItem id
+            in
+            if selectedOption.imageUrlOuter == imageUrl then
+                ( { model | selectedImageUrl = selectedOption.imageUrlInner }, Cmd.none )
+
+            else
+                ( { model | selectedImageUrl = selectedOption.imageUrlOuter }, Cmd.none )
 
 
 
@@ -136,31 +149,24 @@ view model =
     let
         option =
             getSelectedOption model.options.options
+
+        imageUrl =
+            model.selectedImageUrl
+
+        toggledText =
+            if imageUrl == option.imageUrlOuter then
+                "Toggle image"
+
+            else
+                "Close"
     in
     div []
         [ div [] (List.map (viewOption model.selectedOptionId) model.options.options)
-        , div []
-            [ img [ class "option-image", src option.imageUrlOuter, attribute "sizes" option.imageSizes, attribute "loading" "lazy", alt option.color ] []
+        , figure [ class "option-image-figure" ]
+            [ img [ class "option-image", src imageUrl, attribute "sizes" option.imageSizes, attribute "loading" "lazy", alt option.color ] []
             ]
+        , button [ class "toggle-image", onClick (ToggledImage model.selectedOptionId imageUrl) ] [ text toggledText ]
         ]
-
-
-getSelectedOption : List Option -> { imageUrlOuter : String, imageUrlInner : String, imageSizes : String, color : String }
-getSelectedOption options =
-    case List.filter (\option -> option.selected) options of
-        [ option ] ->
-            { color = option.color
-            , imageSizes = option.imageSizes
-            , imageUrlOuter = option.imageUrlOuter
-            , imageUrlInner = option.imageUrlInner
-            }
-
-        _ ->
-            { color = "Colour 1"
-            , imageSizes = "(min-width: 768px) 50vw, 100vw"
-            , imageUrlOuter = "https://picsum.photos/600/400?random=33"
-            , imageUrlInner = "https://picsum.photos/600/400?random=34"
-            }
 
 
 viewOption : String -> Option -> Html Msg
@@ -182,3 +188,55 @@ viewOption selectedId option =
                 []
             ]
         ]
+
+
+
+--  Helper functions
+
+
+getInitialSelectedOptionId : List Option -> String
+getInitialSelectedOptionId options =
+    case List.filter (\option -> option.selected) options of
+        [ option ] ->
+            option.id
+
+        _ ->
+            "option-1"
+
+
+getSelectedItem : String -> { id : String, imageUrlOuter : String, imageUrlInner : String, imageSizes : String, color : String }
+getSelectedItem id =
+    case List.filter (\option -> option.id == id) sampleOptions.options of
+        [ option ] ->
+            { id = option.id
+            , color = option.color
+            , imageSizes = option.imageSizes
+            , imageUrlOuter = option.imageUrlOuter
+            , imageUrlInner = option.imageUrlInner
+            }
+
+        _ ->
+            { id = "Colour 1"
+            , color = "Colour 1"
+            , imageSizes = "(min-width: 768px) 50vw, 100vw"
+            , imageUrlOuter = "https://picsum.photos/600/400?random=33"
+            , imageUrlInner = "https://picsum.photos/600/400?random=34"
+            }
+
+
+getSelectedOption : List Option -> { imageUrlOuter : String, imageUrlInner : String, imageSizes : String, color : String }
+getSelectedOption options =
+    case List.filter (\option -> option.selected) options of
+        [ option ] ->
+            { color = option.color
+            , imageSizes = option.imageSizes
+            , imageUrlOuter = option.imageUrlOuter
+            , imageUrlInner = option.imageUrlInner
+            }
+
+        _ ->
+            { color = "Colour 1"
+            , imageSizes = "(min-width: 768px) 50vw, 100vw"
+            , imageUrlOuter = "https://picsum.photos/600/400?random=33"
+            , imageUrlInner = "https://picsum.photos/600/400?random=34"
+            }
