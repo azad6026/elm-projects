@@ -10582,9 +10582,9 @@ var $author$project$ProductOptions$getInitialSelectedOptionId = function (option
 var $author$project$ProductOptions$sampleOptions = {
 	options: _List_fromArray(
 		[
-			{color: 'Colour 1', id: 'option-1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrl: 'https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg', selected: false},
-			{color: 'Colour 2', id: 'option-2', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrl: 'https://bellroy-cms-images.imgix.net/2024-laneway-homepage-subbanner-2-v2.jpg', selected: true},
-			{color: 'Colour 3', id: 'option-3', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrl: 'https://bellroy-cms-images.imgix.net/2024-Bundles-homepage-subbanner-position-3.jpg', selected: false}
+			{color: 'Colour 1', id: 'option-1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=79', imageUrlOuter: 'https://picsum.photos/600/400?random=78', selected: false},
+			{color: 'Colour 2', id: 'option-2', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=8', imageUrlOuter: 'https://picsum.photos/600/400?random=7', selected: true},
+			{color: 'Colour 3', id: 'option-3', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=28', imageUrlOuter: 'https://picsum.photos/600/400?random=27', selected: false}
 		])
 };
 var $author$project$ProductOptions$init = function (_v0) {
@@ -10619,7 +10619,7 @@ var $author$project$ProductOptions$update = F2(
 	});
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
-var $author$project$ProductOptions$getSelectedImage = function (options) {
+var $author$project$ProductOptions$getSelectedOption = function (options) {
 	var _v0 = A2(
 		$elm$core$List$filter,
 		function (option) {
@@ -10628,9 +10628,9 @@ var $author$project$ProductOptions$getSelectedImage = function (options) {
 		options);
 	if (_v0.b && (!_v0.b.b)) {
 		var option = _v0.a;
-		return {color: option.color, imageSizes: option.imageSizes, imageUrl: option.imageUrl};
+		return {color: option.color, imageSizes: option.imageSizes, imageUrlInner: option.imageUrlInner, imageUrlOuter: option.imageUrlOuter};
 	} else {
-		return {color: 'Colour 1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrl: 'https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg'};
+		return {color: 'Colour 1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=34', imageUrlOuter: 'https://picsum.photos/600/400?random=33'};
 	}
 };
 var $elm$html$Html$img = _VirtualDom_node('img');
@@ -10686,7 +10686,7 @@ var $author$project$ProductOptions$viewOption = F2(
 				]));
 	});
 var $author$project$ProductOptions$view = function (model) {
-	var option = $author$project$ProductOptions$getSelectedImage(model.options.options);
+	var option = $author$project$ProductOptions$getSelectedOption(model.options.options);
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -10709,7 +10709,7 @@ var $author$project$ProductOptions$view = function (model) {
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$class('option-image'),
-								$elm$html$Html$Attributes$src(option.imageUrl),
+								$elm$html$Html$Attributes$src(option.imageUrlOuter),
 								A2($elm$html$Html$Attributes$attribute, 'sizes', option.imageSizes),
 								A2($elm$html$Html$Attributes$attribute, 'loading', 'lazy'),
 								$elm$html$Html$Attributes$alt(option.color)
