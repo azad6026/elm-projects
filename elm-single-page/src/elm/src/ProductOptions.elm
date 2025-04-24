@@ -1,10 +1,10 @@
 module ProductOptions exposing (..)
 
-import Array exposing (get)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import List exposing (product)
 
 
 
@@ -23,9 +23,9 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { options = sampleOptions
-      , selectedOptionId = getInitialSelectedOptionId sampleOptions.options
-      , selectedImageUrl = getSelectedOption sampleOptions.options |> .imageUrlOuter
+    ( { product = sampleProduct
+      , selectedOptionId = getInitialSelectedOptionId sampleProduct.options
+      , selectedImageUrl = getSelectedOption sampleProduct.options |> .imageUrlOuter
       }
     , Cmd.none
     )
@@ -36,7 +36,7 @@ init _ =
 
 
 type alias Model =
-    { options : Options
+    { product : Product
     , selectedOptionId : String
     , selectedImageUrl : String
     }
@@ -47,8 +47,10 @@ type Msg
     | ToggledImage String String
 
 
-type alias Options =
-    { options : List Option
+type alias Product =
+    { title : String
+    , description : String
+    , options : List Option
     }
 
 
@@ -66,9 +68,11 @@ type alias Option =
 --  Sample Api
 
 
-sampleOptions : Options
-sampleOptions =
-    { options =
+sampleProduct : Product
+sampleProduct =
+    { title = "Product Options"
+    , description = "Choose your colour"
+    , options =
         [ { id = "option-1"
           , color = "Colour 1"
           , imageUrlOuter = "https://picsum.photos/600/400?random=78"
@@ -104,7 +108,7 @@ update msg model =
         ChangedSelection id ->
             let
                 selectedOption =
-                    getSelectedItem id
+                    getSelectedItem id model.product.options
 
                 selectedOptions =
                     List.map
@@ -115,14 +119,17 @@ update msg model =
                             else
                                 { option | selected = False }
                         )
-                        model.options.options
+                        model.product.options
 
                 updatedOptions =
-                    { options = selectedOptions }
+                    { title = model.product.title
+                    , description = model.product.description
+                    , options = selectedOptions
+                    }
             in
             ( { model
                 | selectedOptionId = selectedOption.id
-                , options = updatedOptions
+                , product = updatedOptions
                 , selectedImageUrl = selectedOption.imageUrlOuter
               }
             , Cmd.none
@@ -131,7 +138,7 @@ update msg model =
         ToggledImage id imageUrl ->
             let
                 selectedOption =
-                    getSelectedItem id
+                    getSelectedItem id model.product.options
             in
             if selectedOption.imageUrlOuter == imageUrl then
                 ( { model | selectedImageUrl = selectedOption.imageUrlInner }, Cmd.none )
@@ -148,7 +155,7 @@ view : Model -> Html Msg
 view model =
     let
         option =
-            getSelectedOption model.options.options
+            getSelectedOption model.product.options
 
         imageUrl =
             model.selectedImageUrl
@@ -161,9 +168,11 @@ view model =
                 "Close"
     in
     div []
-        [ div [] (List.map (viewOption model.selectedOptionId) model.options.options)
+        [ div [] (List.map (viewOption model.selectedOptionId) model.product.options)
         , figure [ class "option-image-figure" ]
             [ img [ class "option-image", src imageUrl, attribute "sizes" option.imageSizes, attribute "loading" "lazy", alt option.color ] []
+            , h3 [ class "product-title" ] [ text model.product.title ]
+            , p [ class "product-description" ] [ text model.product.description ]
             ]
         , button [ class "toggle-image", onClick (ToggledImage model.selectedOptionId imageUrl) ] [ text toggledText ]
         ]
@@ -204,9 +213,9 @@ getInitialSelectedOptionId options =
             "option-1"
 
 
-getSelectedItem : String -> { id : String, imageUrlOuter : String, imageUrlInner : String, imageSizes : String, color : String }
-getSelectedItem id =
-    case List.filter (\option -> option.id == id) sampleOptions.options of
+getSelectedItem : String -> List Option -> { id : String, imageUrlOuter : String, imageUrlInner : String, imageSizes : String, color : String }
+getSelectedItem id product =
+    case List.filter (\option -> option.id == id) product of
         [ option ] ->
             { id = option.id
             , color = option.color
