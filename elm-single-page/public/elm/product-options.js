@@ -10593,39 +10593,42 @@ var $author$project$ProductOptions$getSelectedOption = function (options) {
 		return {color: 'Colour 1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=34', imageUrlOuter: 'https://picsum.photos/600/400?random=33'};
 	}
 };
-var $author$project$ProductOptions$sampleOptions = {
+var $author$project$ProductOptions$sampleProduct = {
+	description: 'Choose your colour',
 	options: _List_fromArray(
 		[
 			{color: 'Colour 1', id: 'option-1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=79', imageUrlOuter: 'https://picsum.photos/600/400?random=78', selected: false},
 			{color: 'Colour 2', id: 'option-2', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=8', imageUrlOuter: 'https://picsum.photos/600/400?random=7', selected: true},
 			{color: 'Colour 3', id: 'option-3', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=28', imageUrlOuter: 'https://picsum.photos/600/400?random=27', selected: false}
-		])
+		]),
+	title: 'Product Options'
 };
 var $author$project$ProductOptions$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
-			options: $author$project$ProductOptions$sampleOptions,
-			selectedImageUrl: $author$project$ProductOptions$getSelectedOption($author$project$ProductOptions$sampleOptions.options).imageUrlOuter,
-			selectedOptionId: $author$project$ProductOptions$getInitialSelectedOptionId($author$project$ProductOptions$sampleOptions.options)
+			product: $author$project$ProductOptions$sampleProduct,
+			selectedImageUrl: $author$project$ProductOptions$getSelectedOption($author$project$ProductOptions$sampleProduct.options).imageUrlOuter,
+			selectedOptionId: $author$project$ProductOptions$getInitialSelectedOptionId($author$project$ProductOptions$sampleProduct.options)
 		},
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$ProductOptions$getSelectedItem = function (id) {
-	var _v0 = A2(
-		$elm$core$List$filter,
-		function (option) {
-			return _Utils_eq(option.id, id);
-		},
-		$author$project$ProductOptions$sampleOptions.options);
-	if (_v0.b && (!_v0.b.b)) {
-		var option = _v0.a;
-		return {color: option.color, id: option.id, imageSizes: option.imageSizes, imageUrlInner: option.imageUrlInner, imageUrlOuter: option.imageUrlOuter};
-	} else {
-		return {color: 'Colour 1', id: 'Colour 1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=34', imageUrlOuter: 'https://picsum.photos/600/400?random=33'};
-	}
-};
+var $author$project$ProductOptions$getSelectedItem = F2(
+	function (id, product) {
+		var _v0 = A2(
+			$elm$core$List$filter,
+			function (option) {
+				return _Utils_eq(option.id, id);
+			},
+			product);
+		if (_v0.b && (!_v0.b.b)) {
+			var option = _v0.a;
+			return {color: option.color, id: option.id, imageSizes: option.imageSizes, imageUrlInner: option.imageUrlInner, imageUrlOuter: option.imageUrlOuter};
+		} else {
+			return {color: 'Colour 1', id: 'Colour 1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=34', imageUrlOuter: 'https://picsum.photos/600/400?random=33'};
+		}
+	});
 var $author$project$ProductOptions$update = F2(
 	function (msg, model) {
 		if (msg.$ === 'ChangedSelection') {
@@ -10639,18 +10642,18 @@ var $author$project$ProductOptions$update = F2(
 						option,
 						{selected: false});
 				},
-				model.options.options);
-			var updatedOptions = {options: selectedOptions};
-			var selectedOption = $author$project$ProductOptions$getSelectedItem(id);
+				model.product.options);
+			var updatedOptions = {description: model.product.description, options: selectedOptions, title: model.product.title};
+			var selectedOption = A2($author$project$ProductOptions$getSelectedItem, id, model.product.options);
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{options: updatedOptions, selectedImageUrl: selectedOption.imageUrlOuter, selectedOptionId: selectedOption.id}),
+					{product: updatedOptions, selectedImageUrl: selectedOption.imageUrlOuter, selectedOptionId: selectedOption.id}),
 				$elm$core$Platform$Cmd$none);
 		} else {
 			var id = msg.a;
 			var imageUrl = msg.b;
-			var selectedOption = $author$project$ProductOptions$getSelectedItem(id);
+			var selectedOption = A2($author$project$ProductOptions$getSelectedItem, id, model.product.options);
 			return _Utils_eq(selectedOption.imageUrlOuter, imageUrl) ? _Utils_Tuple2(
 				_Utils_update(
 					model,
@@ -10669,6 +10672,7 @@ var $author$project$ProductOptions$ToggledImage = F2(
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$html$Html$figure = _VirtualDom_node('figure');
+var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
@@ -10722,7 +10726,7 @@ var $author$project$ProductOptions$viewOption = F2(
 				]));
 	});
 var $author$project$ProductOptions$view = function (model) {
-	var option = $author$project$ProductOptions$getSelectedOption(model.options.options);
+	var option = $author$project$ProductOptions$getSelectedOption(model.product.options);
 	var imageUrl = model.selectedImageUrl;
 	var toggledText = _Utils_eq(imageUrl, option.imageUrlOuter) ? 'Toggle image' : 'Close';
 	return A2(
@@ -10736,7 +10740,7 @@ var $author$project$ProductOptions$view = function (model) {
 				A2(
 					$elm$core$List$map,
 					$author$project$ProductOptions$viewOption(model.selectedOptionId),
-					model.options.options)),
+					model.product.options)),
 				A2(
 				$elm$html$Html$figure,
 				_List_fromArray(
@@ -10755,7 +10759,27 @@ var $author$project$ProductOptions$view = function (model) {
 								A2($elm$html$Html$Attributes$attribute, 'loading', 'lazy'),
 								$elm$html$Html$Attributes$alt(option.color)
 							]),
-						_List_Nil)
+						_List_Nil),
+						A2(
+						$elm$html$Html$h3,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('product-title')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(model.product.title)
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('product-description')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(model.product.description)
+							]))
 					])),
 				A2(
 				$elm$html$Html$button,
