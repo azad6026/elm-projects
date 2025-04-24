@@ -61,7 +61,8 @@ type alias Options =
 type alias Option =
     { id : String
     , color : String
-    , imageUrl : String
+    , imageUrlOuter : String
+    , imageUrlInner : String
     , imageSizes : String
     , selected : Bool
     }
@@ -72,19 +73,22 @@ sampleOptions =
     { options =
         [ { id = "option-1"
           , color = "Colour 1"
-          , imageUrl = "https://picsum.photos/600/400?random=78"
+          , imageUrlOuter = "https://picsum.photos/600/400?random=78"
+          , imageUrlInner = "https://picsum.photos/600/400?random=79"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
           , selected = False
           }
         , { id = "option-2"
           , color = "Colour 2"
-          , imageUrl = "https://picsum.photos/600/400?random=7"
+          , imageUrlOuter = "https://picsum.photos/600/400?random=7"
+          , imageUrlInner = "https://picsum.photos/600/400?random=8"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
           , selected = True
           }
         , { id = "option-3"
           , color = "Colour 3"
-          , imageUrl = "https://picsum.photos/600/400?random=27"
+          , imageUrlOuter = "https://picsum.photos/600/400?random=27"
+          , imageUrlInner = "https://picsum.photos/600/400?random=28"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
           , selected = False
           }
@@ -131,29 +135,31 @@ view : Model -> Html Msg
 view model =
     let
         option =
-            getSelectedImage model.options.options
+            getSelectedOption model.options.options
     in
     div []
         [ div [] (List.map (viewOption model.selectedOptionId) model.options.options)
         , div []
-            [ img [ class "option-image", src option.imageUrl, attribute "sizes" option.imageSizes, attribute "loading" "lazy", alt option.color ] []
+            [ img [ class "option-image", src option.imageUrlOuter, attribute "sizes" option.imageSizes, attribute "loading" "lazy", alt option.color ] []
             ]
         ]
 
 
-getSelectedImage : List Option -> { imageUrl : String, imageSizes : String, color : String }
-getSelectedImage options =
+getSelectedOption : List Option -> { imageUrlOuter : String, imageUrlInner : String, imageSizes : String, color : String }
+getSelectedOption options =
     case List.filter (\option -> option.selected) options of
         [ option ] ->
             { color = option.color
             , imageSizes = option.imageSizes
-            , imageUrl = option.imageUrl
+            , imageUrlOuter = option.imageUrlOuter
+            , imageUrlInner = option.imageUrlInner
             }
 
         _ ->
             { color = "Colour 1"
             , imageSizes = "(min-width: 768px) 50vw, 100vw"
-            , imageUrl = "https://bellroy-cms-images.imgix.net/2024-Tech-collection-homepage-subbanner-1.jpg"
+            , imageUrlOuter = "https://picsum.photos/600/400?random=33"
+            , imageUrlInner = "https://picsum.photos/600/400?random=34"
             }
 
 
