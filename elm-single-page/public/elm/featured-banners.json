@@ -61,30 +61,74 @@
             "linkText": "Link to this collection"
         }
     ],
-    "options": [
+    "products": [
         {
-            "id": "option-1",
-            "color": "Colour 1",
-            "imageUrl": "https://picsum.photos/600/400?random=7",
-            "imageSizes": "(min-width: 768px) 50vw, 100vw"
+            "id": "product-1",
+            "title": "Product 1",
+            "description": "Choose your colour",
+            "options": [
+                {
+                    "id": "option-1",
+                    "color": "Colour 1",
+                    "imageUrlOuter": "https://picsum.photos/600/400?random=78",
+                    "imageUrlInner": "https://picsum.photos/600/400?random=79",
+                    "imageSizes": "(min-width: 768px) 50vw, 100vw",
+                    "price": 100,
+                    "selected": false
+                },
+                {
+                    "id": "option-2",
+                    "color": "Colour 2",
+                    "imageUrlOuter": "https://picsum.photos/600/400?random=7",
+                    "imageUrlInner": "https://picsum.photos/600/400?random=8",
+                    "imageSizes": "(min-width: 768px) 50vw, 100vw",
+                    "price": 200,
+                    "selected": true
+                },
+                {
+                    "id": "option-3",
+                    "color": "Colour 3",
+                    "imageUrlOuter": "https://picsum.photos/600/400?random=27",
+                    "imageUrlInner": "https://picsum.photos/600/400?random=28",
+                    "imageSizes": "(min-width: 768px) 50vw, 100vw",
+                    "price": 300,
+                    "selected": true
+                }
+            ]
         },
         {
-            "id": "option-2",
-            "color": "Colour 2",
-            "imageUrl": "https://picsum.photos/600/400?random=8",
-            "imageSizes": "(min-width: 768px) 50vw, 100vw"
-        },
-        {
-            "id": "option-3",
-            "color": "Colour 3",
-            "imageUrl": "https://picsum.photos/600/400?random=9",
-            "imageSizes": "(min-width: 768px) 50vw, 100vw"
-        },
-        {
-            "id": "option-4",
-            "color": "Colour 4",
-            "imageUrl": "https://picsum.photos/600/400?random=10",
-            "imageSizes": "(min-width: 768px) 50vw, 100vw"
+            "id": "product-2",
+            "title": "Product 2",
+            "description": "Choose your colour",
+            "options": [
+                {
+                    "id": "option-1",
+                    "color": "Colour 1",
+                    "imageUrlOuter": "https://picsum.photos/600/400?random=78",
+                    "imageUrlInner": "https://picsum.photos/600/400?random=79",
+                    "imageSizes": "(min-width: 768px) 50vw, 100vw",
+                    "price": 100,
+                    "selected": false
+                },
+                {
+                    "id": "option-2",
+                    "color": "Colour 2",
+                    "imageUrlOuter": "https://picsum.photos/600/400?random=7",
+                    "imageUrlInner": "https://picsum.photos/600/400?random=8",
+                    "imageSizes": "(min-width: 768px) 50vw, 100vw",
+                    "price": 200,
+                    "selected": true
+                },
+                {
+                    "id": "option-3",
+                    "color": "Colour 3",
+                    "imageUrlOuter": "https://picsum.photos/600/400?random=27",
+                    "imageUrlInner": "https://picsum.photos/600/400?random=28",
+                    "imageSizes": "(min-width: 768px) 50vw, 100vw",
+                    "price": 300,
+                    "selected": true
+                }
+            ]
         }
     ]
 }

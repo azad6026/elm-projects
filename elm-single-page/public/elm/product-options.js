@@ -10588,18 +10588,18 @@ var $author$project$ProductOptions$getSelectedOption = function (options) {
 		options);
 	if (_v0.b && (!_v0.b.b)) {
 		var option = _v0.a;
-		return {color: option.color, imageSizes: option.imageSizes, imageUrlInner: option.imageUrlInner, imageUrlOuter: option.imageUrlOuter};
+		return {color: option.color, imageSizes: option.imageSizes, imageUrlInner: option.imageUrlInner, imageUrlOuter: option.imageUrlOuter, price: option.price};
 	} else {
-		return {color: 'Colour 1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=34', imageUrlOuter: 'https://picsum.photos/600/400?random=33'};
+		return {color: 'Colour 1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=34', imageUrlOuter: 'https://picsum.photos/600/400?random=33', price: 100};
 	}
 };
 var $author$project$ProductOptions$sampleProduct = {
 	description: 'Choose your colour',
 	options: _List_fromArray(
 		[
-			{color: 'Colour 1', id: 'option-1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=79', imageUrlOuter: 'https://picsum.photos/600/400?random=78', selected: false},
-			{color: 'Colour 2', id: 'option-2', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=8', imageUrlOuter: 'https://picsum.photos/600/400?random=7', selected: true},
-			{color: 'Colour 3', id: 'option-3', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=28', imageUrlOuter: 'https://picsum.photos/600/400?random=27', selected: false}
+			{color: 'Colour 1', id: 'option-1', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=79', imageUrlOuter: 'https://picsum.photos/600/400?random=78', price: 100, selected: false},
+			{color: 'Colour 2', id: 'option-2', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=8', imageUrlOuter: 'https://picsum.photos/600/400?random=7', price: 200, selected: true},
+			{color: 'Colour 3', id: 'option-3', imageSizes: '(min-width: 768px) 50vw, 100vw', imageUrlInner: 'https://picsum.photos/600/400?random=28', imageUrlOuter: 'https://picsum.photos/600/400?random=27', price: 300, selected: false}
 		]),
 	title: 'Product Options'
 };
@@ -10671,6 +10671,7 @@ var $author$project$ProductOptions$ToggledImage = F2(
 	});
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $elm$html$Html$figcaption = _VirtualDom_node('figcaption');
 var $elm$html$Html$figure = _VirtualDom_node('figure');
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$img = _VirtualDom_node('img');
@@ -10698,31 +10699,26 @@ var $author$project$ProductOptions$viewOption = F2(
 	function (selectedId, option) {
 		var isChecked = _Utils_eq(selectedId, option.id);
 		return A2(
-			$elm$html$Html$div,
-			_List_Nil,
+			$elm$html$Html$label,
 			_List_fromArray(
 				[
+					$elm$html$Html$Attributes$class('option-label')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(option.color),
 					A2(
-					$elm$html$Html$label,
+					$elm$html$Html$input,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('option-label')
+							$elm$html$Html$Attributes$type_('radio'),
+							$elm$html$Html$Attributes$name('option'),
+							$elm$html$Html$Attributes$value(option.id),
+							$elm$html$Html$Attributes$checked(isChecked),
+							$elm$html$Html$Events$onInput($author$project$ProductOptions$ChangedSelection),
+							$elm$html$Html$Attributes$class('option-radio')
 						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(option.color),
-							A2(
-							$elm$html$Html$input,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$type_('radio'),
-									$elm$html$Html$Attributes$name('option'),
-									$elm$html$Html$Attributes$value(option.id),
-									$elm$html$Html$Attributes$checked(isChecked),
-									$elm$html$Html$Events$onInput($author$project$ProductOptions$ChangedSelection)
-								]),
-							_List_Nil)
-						]))
+					_List_Nil)
 				]));
 	});
 var $author$project$ProductOptions$view = function (model) {
@@ -10731,21 +10727,17 @@ var $author$project$ProductOptions$view = function (model) {
 	var toggledText = _Utils_eq(imageUrl, option.imageUrlOuter) ? 'Toggle image' : 'Close';
 	return A2(
 		$elm$html$Html$div,
-		_List_Nil,
 		_List_fromArray(
 			[
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				A2(
-					$elm$core$List$map,
-					$author$project$ProductOptions$viewOption(model.selectedOptionId),
-					model.product.options)),
+				$elm$html$Html$Attributes$class('product-wrapper')
+			]),
+		_List_fromArray(
+			[
 				A2(
 				$elm$html$Html$figure,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('option-image-figure')
+						$elm$html$Html$Attributes$class('product-figure')
 					]),
 				_List_fromArray(
 					[
@@ -10753,7 +10745,7 @@ var $author$project$ProductOptions$view = function (model) {
 						$elm$html$Html$img,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('option-image'),
+								$elm$html$Html$Attributes$class('product-image'),
 								$elm$html$Html$Attributes$src(imageUrl),
 								A2($elm$html$Html$Attributes$attribute, 'sizes', option.imageSizes),
 								A2($elm$html$Html$Attributes$attribute, 'loading', 'lazy'),
@@ -10761,38 +10753,68 @@ var $author$project$ProductOptions$view = function (model) {
 							]),
 						_List_Nil),
 						A2(
-						$elm$html$Html$h3,
+						$elm$html$Html$figcaption,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('product-title')
+								$elm$html$Html$Attributes$class('product-text')
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(model.product.title)
+								A2(
+								$elm$html$Html$p,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('product-price')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$elm$core$String$fromInt(option.price) + ' $')
+									])),
+								A2(
+								$elm$html$Html$h3,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('product-title')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(model.product.title)
+									])),
+								A2(
+								$elm$html$Html$p,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('product-description')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(model.product.description)
+									]))
 							])),
 						A2(
-						$elm$html$Html$p,
+						$elm$html$Html$button,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('product-description')
+								$elm$html$Html$Attributes$class('product-toggle-image'),
+								$elm$html$Html$Events$onClick(
+								A2($author$project$ProductOptions$ToggledImage, model.selectedOptionId, imageUrl))
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(model.product.description)
+								$elm$html$Html$text(toggledText)
 							]))
 					])),
 				A2(
-				$elm$html$Html$button,
+				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('toggle-image'),
-						$elm$html$Html$Events$onClick(
-						A2($author$project$ProductOptions$ToggledImage, model.selectedOptionId, imageUrl))
+						$elm$html$Html$Attributes$class('product-options')
 					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(toggledText)
-					]))
+				A2(
+					$elm$core$List$map,
+					$author$project$ProductOptions$viewOption(model.selectedOptionId),
+					model.product.options))
 			]));
 };
 var $author$project$ProductOptions$main = $elm$browser$Browser$element(
