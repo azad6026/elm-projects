@@ -60,6 +60,7 @@ type alias Option =
     , imageUrlOuter : String
     , imageUrlInner : String
     , imageSizes : String
+    , price : Int
     , selected : Bool
     }
 
@@ -78,6 +79,7 @@ sampleProduct =
           , imageUrlOuter = "https://picsum.photos/600/400?random=78"
           , imageUrlInner = "https://picsum.photos/600/400?random=79"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
+          , price = 100
           , selected = False
           }
         , { id = "option-2"
@@ -85,6 +87,7 @@ sampleProduct =
           , imageUrlOuter = "https://picsum.photos/600/400?random=7"
           , imageUrlInner = "https://picsum.photos/600/400?random=8"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
+          , price = 200
           , selected = True
           }
         , { id = "option-3"
@@ -92,6 +95,7 @@ sampleProduct =
           , imageUrlOuter = "https://picsum.photos/600/400?random=27"
           , imageUrlInner = "https://picsum.photos/600/400?random=28"
           , imageSizes = "(min-width: 768px) 50vw, 100vw"
+          , price = 300
           , selected = False
           }
         ]
@@ -167,14 +171,19 @@ view model =
             else
                 "Close"
     in
-    div []
-        [ div [] (List.map (viewOption model.selectedOptionId) model.product.options)
-        , figure [ class "option-image-figure" ]
-            [ img [ class "option-image", src imageUrl, attribute "sizes" option.imageSizes, attribute "loading" "lazy", alt option.color ] []
-            , h3 [ class "product-title" ] [ text model.product.title ]
-            , p [ class "product-description" ] [ text model.product.description ]
+    div [ class "product-wrapper" ]
+        [ figure [ class "product-figure" ]
+            [ img [ class "product-image", src imageUrl, attribute "sizes" option.imageSizes, attribute "loading" "lazy", alt option.color ]
+                []
+            , figcaption
+                [ class "product-text" ]
+                [ p [ class "product-price" ] [ text (String.fromInt option.price ++ " $") ]
+                , h3 [ class "product-title" ] [ text model.product.title ]
+                , p [ class "product-description" ] [ text model.product.description ]
+                ]
+            , button [ class "product-toggle-image", onClick (ToggledImage model.selectedOptionId imageUrl) ] [ text toggledText ]
             ]
-        , button [ class "toggle-image", onClick (ToggledImage model.selectedOptionId imageUrl) ] [ text toggledText ]
+        , div [ class "product-options" ] (List.map (viewOption model.selectedOptionId) model.product.options)
         ]
 
 
@@ -184,18 +193,17 @@ viewOption selectedId option =
         isChecked =
             selectedId == option.id
     in
-    div []
-        [ label [ class "option-label" ]
-            [ text option.color
-            , input
-                [ type_ "radio"
-                , name "option"
-                , value option.id
-                , checked isChecked
-                , onInput ChangedSelection
-                ]
-                []
+    label [ class "option-label" ]
+        [ text option.color
+        , input
+            [ type_ "radio"
+            , name "option"
+            , value option.id
+            , checked isChecked
+            , onInput ChangedSelection
+            , class "option-radio"
             ]
+            []
         ]
 
 
@@ -233,7 +241,7 @@ getSelectedItem id product =
             }
 
 
-getSelectedOption : List Option -> { imageUrlOuter : String, imageUrlInner : String, imageSizes : String, color : String }
+getSelectedOption : List Option -> { imageUrlOuter : String, imageUrlInner : String, imageSizes : String, color : String, price : Int }
 getSelectedOption options =
     case List.filter (\option -> option.selected) options of
         [ option ] ->
@@ -241,6 +249,7 @@ getSelectedOption options =
             , imageSizes = option.imageSizes
             , imageUrlOuter = option.imageUrlOuter
             , imageUrlInner = option.imageUrlInner
+            , price = option.price
             }
 
         _ ->
@@ -248,4 +257,5 @@ getSelectedOption options =
             , imageSizes = "(min-width: 768px) 50vw, 100vw"
             , imageUrlOuter = "https://picsum.photos/600/400?random=33"
             , imageUrlInner = "https://picsum.photos/600/400?random=34"
+            , price = 100
             }
