@@ -1,0 +1,11 @@
+<div id="elm-porducts"></div>
+<script>
+import ElmFeaturedBanners from "./ElmFeaturedBanners.astro"
+
+    document.addEventListener("DOMContentLoaded" , function(){
+        ElmFeaturedBanners.Products.init ({
+            node: document.getElementById("elm-porducts")
+        })
+    })
+</script>
+<script :is-inline src ="/elm/products.js"></script>
