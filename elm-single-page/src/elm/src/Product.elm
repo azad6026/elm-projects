@@ -1,4 +1,4 @@
-module ProductOptions exposing (..)
+module Product exposing (..)
 
 import Browser
 import Html exposing (..)
