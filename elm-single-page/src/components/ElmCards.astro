@@ -1,0 +1,12 @@
+---
+    import '../styles/cards.css';
+---
+<div id="elm-cards"></div>
+<script>
+    document.addEventListener("DOMContentLoaded" , function(){
+        Elm.Cards.init ( {
+            node: document.getElementById("elm-cards")
+        })
+    })
+</script>
+<script :is-inline src ="/elm/cards.js"></script>
