@@ -8,6 +8,7 @@
   --color-dark: #333;
   --font-serif: "Spectral", serif;
   --font-sans: "Spectral", serif;
+  --form-control-color: rebeccapurple;
 }
 html {
   font-size: 62.5%;
@@ -15,4 +16,26 @@ html {
 body {
   font-family: "Spectral", sans-serif;
   font-weight: 400;
+}
+
+/* animations */
+@keyframes swing {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(..3deg);
+  }
+  40% {
+    transform: rotate(-1deg);
+  }
+  60% {
+    transform: rotate(.2deg);
+  }
+  80% {
+    transform: rotate(-.2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
