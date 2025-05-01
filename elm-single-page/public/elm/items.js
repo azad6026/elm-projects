@@ -11145,6 +11145,7 @@ var $author$project$Items$Inner = {$: 'Inner'};
 var $author$project$Items$Success = function (a) {
 	return {$: 'Success', a: a};
 };
+var $elm$core$List$sortBy = _List_sortBy;
 var $author$project$Items$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -11182,7 +11183,7 @@ var $author$project$Items$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			default:
+			case 'ToggledImage':
 				var cardId = msg.a;
 				var toggledImage = msg.b;
 				if (model.$ === 'Success') {
@@ -11210,8 +11211,64 @@ var $author$project$Items$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
+			default:
+				var selectedSortOption = msg.a;
+				if (model.$ === 'Success') {
+					var items = model.a;
+					if (selectedSortOption.$ === 'PriceLowToHigh') {
+						return _Utils_Tuple2(
+							$author$project$Items$Success(
+								_Utils_update(
+									items,
+									{
+										items: A2(
+											$elm$core$List$sortBy,
+											function ($) {
+												return $.initialPrice;
+											},
+											items.items)
+									})),
+							$elm$core$Platform$Cmd$none);
+					} else {
+						return _Utils_Tuple2(
+							$author$project$Items$Success(
+								_Utils_update(
+									items,
+									{
+										items: $elm$core$List$reverse(
+											A2(
+												$elm$core$List$sortBy,
+												function ($) {
+													return $.initialPrice;
+												},
+												items.items))
+									})),
+							$elm$core$Platform$Cmd$none);
+					}
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 		}
 	});
+var $author$project$Items$PriceHighToLow = {$: 'PriceHighToLow'};
+var $author$project$Items$PriceLowToHigh = {$: 'PriceLowToHigh'};
+var $author$project$Items$SortedItems = function (a) {
+	return {$: 'SortedItems', a: a};
+};
+var $author$project$Items$frmStringToSortedItems = function (selectOptinValue) {
+	switch (selectOptinValue) {
+		case 'PriceLowToHigh':
+			return $author$project$Items$SortedItems($author$project$Items$PriceLowToHigh);
+		case 'PriceHighToLow':
+			return $author$project$Items$SortedItems($author$project$Items$PriceHighToLow);
+		default:
+			return $author$project$Items$SortedItems($author$project$Items$PriceLowToHigh);
+	}
+};
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$option = _VirtualDom_node('option');
+var $elm$html$Html$section = _VirtualDom_node('section');
+var $elm$html$Html$select = _VirtualDom_node('select');
 var $author$project$Items$ToggledImage = F2(
 	function (a, b) {
 		return {$: 'ToggledImage', a: a, b: b};
@@ -11432,6 +11489,17 @@ var $author$project$Items$viewItem = function (item) {
 										$elm$html$Html$text(item.description)
 									])),
 								A2(
+								$elm$html$Html$p,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('price')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$elm$core$String$fromInt(item.initialPrice))
+									])),
+								A2(
 								$elm$html$Html$fieldset,
 								_List_fromArray(
 									[
@@ -11447,12 +11515,63 @@ var $author$project$Items$viewItem = function (item) {
 };
 var $author$project$Items$viewItems = function (data) {
 	return A2(
-		$elm$html$Html$div,
+		$elm$html$Html$section,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('items')
+				$elm$html$Html$Attributes$class('page')
 			]),
-		A2($elm$core$List$map, $author$project$Items$viewItem, data.items));
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$h1,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('main-title')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('List of items')
+					])),
+				A2(
+				$elm$html$Html$select,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('select'),
+						$elm$html$Html$Events$onInput($author$project$Items$frmStringToSortedItems)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('select-option'),
+								$elm$html$Html$Attributes$value('PriceLowToHigh')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Price  -> Low To High')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('select-option'),
+								$elm$html$Html$Attributes$value('PriceHighToLow')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Price  -> High To Low')
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('items')
+					]),
+				A2($elm$core$List$map, $author$project$Items$viewItem, data.items))
+			]));
 };
 var $author$project$Items$view = function (model) {
 	switch (model.$) {
@@ -11487,4 +11606,4 @@ var $author$project$Items$main = $elm$browser$Browser$element(
 		view: $author$project$Items$view
 	});
 _Platform_export({'Items':{'init':$author$project$Items$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Items.Msg","aliases":{"Items.Item":{"args":[],"type":"{ id : String.String, itemType : String.String, initialPrice : Basics.Int, title : String.String, description : String.String, tags : String.String, options : List.List Items.Option, selectedOption : Items.NewOption, toggledImage : Items.ItemImage }"},"Items.Items":{"args":[],"type":"{ items : List.List Items.Item }"},"Items.Option":{"args":[],"type":"{ id : String.String, color : String.String, imageUrlOuter : String.String, imageUrlInner : String.String, imageSizes : String.String, price : Basics.Int, selected : Basics.Bool }"}},"unions":{"Items.Msg":{"args":[],"tags":{"GotItems":["Result.Result Http.Error Items.Items"],"ChangedOption":["String.String","Items.NewOption"],"ToggledImage":["String.String","Items.ItemImage"]}},"Basics.Bool":{"args":[],"tags":{"True":[],"False":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Items.ItemImage":{"args":[],"tags":{"Outer":[],"Inner":[]}},"List.List":{"args":["a"],"tags":{}},"Items.NewOption":{"args":[],"tags":{"Yellow":[],"Red":[],"Royalblue":[],"Green":[]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Items.Msg","aliases":{"Items.Item":{"args":[],"type":"{ id : String.String, itemType : String.String, initialPrice : Basics.Int, title : String.String, description : String.String, tags : String.String, options : List.List Items.Option, selectedOption : Items.NewOption, toggledImage : Items.ItemImage }"},"Items.Items":{"args":[],"type":"{ items : List.List Items.Item }"},"Items.Option":{"args":[],"type":"{ id : String.String, color : String.String, imageUrlOuter : String.String, imageUrlInner : String.String, imageSizes : String.String, price : Basics.Int, selected : Basics.Bool }"}},"unions":{"Items.Msg":{"args":[],"tags":{"GotItems":["Result.Result Http.Error Items.Items"],"ChangedOption":["String.String","Items.NewOption"],"ToggledImage":["String.String","Items.ItemImage"],"SortedItems":["Items.SortOption"]}},"Basics.Bool":{"args":[],"tags":{"True":[],"False":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Items.ItemImage":{"args":[],"tags":{"Outer":[],"Inner":[]}},"List.List":{"args":["a"],"tags":{}},"Items.NewOption":{"args":[],"tags":{"Yellow":[],"Red":[],"Royalblue":[],"Green":[]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Items.SortOption":{"args":[],"tags":{"PriceLowToHigh":[],"PriceHighToLow":[]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
