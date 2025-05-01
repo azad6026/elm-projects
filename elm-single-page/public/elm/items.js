@@ -10984,10 +10984,11 @@ var $elm$http$Http$get = function (r) {
 var $author$project$Items$Items = function (items) {
 	return {items: items};
 };
-var $author$project$Items$Item = F8(
-	function (id, itemType, initialPrice, title, description, tags, options, selectedOption) {
-		return {description: description, id: id, initialPrice: initialPrice, itemType: itemType, options: options, selectedOption: selectedOption, tags: tags, title: title};
+var $author$project$Items$Item = F9(
+	function (id, itemType, initialPrice, title, description, tags, options, selectedOption, toggledImage) {
+		return {description: description, id: id, initialPrice: initialPrice, itemType: itemType, options: options, selectedOption: selectedOption, tags: tags, title: title, toggledImage: toggledImage};
 	});
+var $author$project$Items$Outer = {$: 'Outer'};
 var $author$project$Items$Yellow = {$: 'Yellow'};
 var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom = $elm$json$Json$Decode$map2($elm$core$Basics$apR);
 var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$hardcoded = A2($elm$core$Basics$composeR, $elm$json$Json$Decode$succeed, $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom);
@@ -11086,37 +11087,40 @@ var $author$project$Items$optionDecoder = A4(
 							$elm$json$Json$Decode$succeed($author$project$Items$Option))))))));
 var $author$project$Items$itemDecoder = A2(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$hardcoded,
-	$author$project$Items$Yellow,
-	A3(
-		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-		'options',
-		$elm$json$Json$Decode$list($author$project$Items$optionDecoder),
-		A4(
-			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
-			'tags ',
-			$elm$json$Json$Decode$string,
-			'',
-			A3(
-				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-				'description',
+	$author$project$Items$Outer,
+	A2(
+		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$hardcoded,
+		$author$project$Items$Yellow,
+		A3(
+			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+			'options',
+			$elm$json$Json$Decode$list($author$project$Items$optionDecoder),
+			A4(
+				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
+				'tags ',
 				$elm$json$Json$Decode$string,
+				'',
 				A3(
 					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-					'title',
+					'description',
 					$elm$json$Json$Decode$string,
 					A3(
 						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-						'initialPrice',
-						$elm$json$Json$Decode$int,
+						'title',
+						$elm$json$Json$Decode$string,
 						A3(
 							$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-							'itemType',
-							$elm$json$Json$Decode$string,
+							'initialPrice',
+							$elm$json$Json$Decode$int,
 							A3(
 								$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-								'id',
+								'itemType',
 								$elm$json$Json$Decode$string,
-								$elm$json$Json$Decode$succeed($author$project$Items$Item)))))))));
+								A3(
+									$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+									'id',
+									$elm$json$Json$Decode$string,
+									$elm$json$Json$Decode$succeed($author$project$Items$Item))))))))));
 var $author$project$Items$itemsDecoder = A2(
 	$elm$json$Json$Decode$map,
 	$author$project$Items$Items,
@@ -11137,46 +11141,80 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Items$Failed = function (a) {
 	return {$: 'Failed', a: a};
 };
+var $author$project$Items$Inner = {$: 'Inner'};
 var $author$project$Items$Success = function (a) {
 	return {$: 'Success', a: a};
 };
 var $author$project$Items$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'GotItems') {
-			var result = msg.a;
-			if (result.$ === 'Ok') {
-				var items = result.a;
-				return _Utils_Tuple2(
-					$author$project$Items$Success(items),
-					$elm$core$Platform$Cmd$none);
-			} else {
-				var error = result.a;
-				return _Utils_Tuple2(
-					$author$project$Items$Failed(error),
-					$elm$core$Platform$Cmd$none);
-			}
-		} else {
-			var cardId = msg.a;
-			var newOption = msg.b;
-			if (model.$ === 'Success') {
-				var items = model.a;
-				var updateCard = function (card) {
-					return _Utils_eq(card.id, cardId) ? _Utils_update(
-						card,
-						{selectedOption: newOption}) : card;
-				};
-				return _Utils_Tuple2(
-					$author$project$Items$Success(
-						_Utils_update(
-							items,
-							{
-								items: A2($elm$core$List$map, updateCard, items.items)
-							})),
-					$elm$core$Platform$Cmd$none);
-			} else {
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			}
+		switch (msg.$) {
+			case 'GotItems':
+				var result = msg.a;
+				if (result.$ === 'Ok') {
+					var items = result.a;
+					return _Utils_Tuple2(
+						$author$project$Items$Success(items),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					var error = result.a;
+					return _Utils_Tuple2(
+						$author$project$Items$Failed(error),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 'ChangedOption':
+				var cardId = msg.a;
+				var newOption = msg.b;
+				if (model.$ === 'Success') {
+					var items = model.a;
+					var updateCardWithNewSelectedOption = function (card) {
+						return _Utils_eq(card.id, cardId) ? _Utils_update(
+							card,
+							{selectedOption: newOption}) : card;
+					};
+					return _Utils_Tuple2(
+						$author$project$Items$Success(
+							_Utils_update(
+								items,
+								{
+									items: A2($elm$core$List$map, updateCardWithNewSelectedOption, items.items)
+								})),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
+			default:
+				var cardId = msg.a;
+				var toggledImage = msg.b;
+				if (model.$ === 'Success') {
+					var items = model.a;
+					var newImage = function () {
+						if (toggledImage.$ === 'Outer') {
+							return $author$project$Items$Inner;
+						} else {
+							return $author$project$Items$Outer;
+						}
+					}();
+					var updatedCardWithToggledImage = function (card) {
+						return _Utils_eq(card.id, cardId) ? _Utils_update(
+							card,
+							{toggledImage: newImage}) : card;
+					};
+					return _Utils_Tuple2(
+						$author$project$Items$Success(
+							_Utils_update(
+								items,
+								{
+									items: A2($elm$core$List$map, updatedCardWithToggledImage, items.items)
+								})),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 		}
+	});
+var $author$project$Items$ToggledImage = F2(
+	function (a, b) {
+		return {$: 'ToggledImage', a: a, b: b};
 	});
 var $elm$html$Html$article = _VirtualDom_node('article');
 var $elm$html$Html$fieldset = _VirtualDom_node('fieldset');
@@ -11210,9 +11248,9 @@ var $elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $author$project$Items$ChangeOption = F2(
+var $author$project$Items$ChangedOption = F2(
 	function (a, b) {
-		return {$: 'ChangeOption', a: a, b: b};
+		return {$: 'ChangedOption', a: a, b: b};
 	});
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
@@ -11271,7 +11309,7 @@ var $author$project$Items$viewOption = F2(
 								$author$project$Items$stringToNewOption(option.color))),
 							$elm$html$Html$Events$onClick(
 							A2(
-								$author$project$Items$ChangeOption,
+								$author$project$Items$ChangedOption,
 								item.id,
 								$author$project$Items$stringToNewOption(option.color)))
 						]),
@@ -11280,8 +11318,8 @@ var $author$project$Items$viewOption = F2(
 	});
 var $author$project$Items$viewItem = function (item) {
 	var selecetdItem = function () {
-		var _v1 = item.selectedOption;
-		switch (_v1.$) {
+		var _v2 = item.selectedOption;
+		switch (_v2.$) {
 			case 'Yellow':
 				return A2(
 					$elm$core$List$filter,
@@ -11313,12 +11351,20 @@ var $author$project$Items$viewItem = function (item) {
 		}
 	}();
 	var optionsInfo = function () {
-		var _v0 = $elm$core$List$head(selecetdItem);
-		if (_v0.$ === 'Just') {
-			var option = _v0.a;
+		var _v1 = $elm$core$List$head(selecetdItem);
+		if (_v1.$ === 'Just') {
+			var option = _v1.a;
 			return {id: option.id, imageUrlInner: option.imageUrlInner, imageUrlOuter: option.imageUrlOuter, price: option.price, selected: true};
 		} else {
 			return {id: '', imageUrlInner: '', imageUrlOuter: '', price: 0, selected: false};
+		}
+	}();
+	var imgeUrl = function () {
+		var _v0 = item.toggledImage;
+		if (_v0.$ === 'Outer') {
+			return optionsInfo.imageUrlOuter;
+		} else {
+			return optionsInfo.imageUrlInner;
 		}
 	}();
 	return A2(
@@ -11333,7 +11379,9 @@ var $author$project$Items$viewItem = function (item) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('toggle-image')
+						$elm$html$Html$Attributes$class('toggle-image'),
+						$elm$html$Html$Events$onClick(
+						A2($author$project$Items$ToggledImage, item.id, item.toggledImage))
 					]),
 				_List_fromArray(
 					[
@@ -11352,7 +11400,7 @@ var $author$project$Items$viewItem = function (item) {
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$class('image'),
-								$elm$html$Html$Attributes$src(optionsInfo.imageUrlOuter)
+								$elm$html$Html$Attributes$src(imgeUrl)
 							]),
 						_List_Nil),
 						A2(
@@ -11439,4 +11487,4 @@ var $author$project$Items$main = $elm$browser$Browser$element(
 		view: $author$project$Items$view
 	});
 _Platform_export({'Items':{'init':$author$project$Items$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Items.Msg","aliases":{"Items.Item":{"args":[],"type":"{ id : String.String, itemType : String.String, initialPrice : Basics.Int, title : String.String, description : String.String, tags : String.String, options : List.List Items.Option, selectedOption : Items.NewOption }"},"Items.Items":{"args":[],"type":"{ items : List.List Items.Item }"},"Items.Option":{"args":[],"type":"{ id : String.String, color : String.String, imageUrlOuter : String.String, imageUrlInner : String.String, imageSizes : String.String, price : Basics.Int, selected : Basics.Bool }"}},"unions":{"Items.Msg":{"args":[],"tags":{"GotItems":["Result.Result Http.Error Items.Items"],"ChangeOption":["String.String","Items.NewOption"]}},"Basics.Bool":{"args":[],"tags":{"True":[],"False":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"List.List":{"args":["a"],"tags":{}},"Items.NewOption":{"args":[],"tags":{"Yellow":[],"Red":[],"Royalblue":[],"Green":[]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Items.Msg","aliases":{"Items.Item":{"args":[],"type":"{ id : String.String, itemType : String.String, initialPrice : Basics.Int, title : String.String, description : String.String, tags : String.String, options : List.List Items.Option, selectedOption : Items.NewOption, toggledImage : Items.ItemImage }"},"Items.Items":{"args":[],"type":"{ items : List.List Items.Item }"},"Items.Option":{"args":[],"type":"{ id : String.String, color : String.String, imageUrlOuter : String.String, imageUrlInner : String.String, imageSizes : String.String, price : Basics.Int, selected : Basics.Bool }"}},"unions":{"Items.Msg":{"args":[],"tags":{"GotItems":["Result.Result Http.Error Items.Items"],"ChangedOption":["String.String","Items.NewOption"],"ToggledImage":["String.String","Items.ItemImage"]}},"Basics.Bool":{"args":[],"tags":{"True":[],"False":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Items.ItemImage":{"args":[],"tags":{"Outer":[],"Inner":[]}},"List.List":{"args":["a"],"tags":{}},"Items.NewOption":{"args":[],"tags":{"Yellow":[],"Red":[],"Royalblue":[],"Green":[]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
