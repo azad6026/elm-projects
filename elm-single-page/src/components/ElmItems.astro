@@ -1,0 +1,14 @@
+---
+    import '../styles/items.css'
+---
+
+<div id="elm-items"></div>
+<script>
+
+    document.addEventListener("DOMContentLoaded" , function(){
+        Elm.Items.init ({
+            node: document.getElementById("elm-items")
+        })
+    })
+</script>
+<script :is-inline src = "/elm/items.js"></script>
