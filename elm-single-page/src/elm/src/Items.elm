@@ -80,9 +80,12 @@ type ItemImage
     | Inner
 
 
+type SortOption
+    = PriceLowToHigh
+    | PriceHighToLow
 
--- type ChangedRadio
---     = Option
+
+
 -- Update
 
 
@@ -90,6 +93,7 @@ type Msg
     = GotItems (Result Http.Error Items)
     | ChangedOption String NewOption
     | ToggledImage String ItemImage
+    | SortedItems SortOption
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -145,6 +149,19 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
+        SortedItems selectedSortOption ->
+            case model of
+                Success items ->
+                    case selectedSortOption of
+                        PriceLowToHigh ->
+                            ( Success { items | items = List.sortBy .initialPrice items.items }, Cmd.none )
+
+                        PriceHighToLow ->
+                            ( Success { items | items = List.sortBy .initialPrice items.items |> List.reverse }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
 
 
 -- View
@@ -165,7 +182,31 @@ view model =
 
 viewItems : Items -> Html Msg
 viewItems data =
-    div [ class "items" ] (List.map viewItem data.items)
+    section [ class "page" ]
+        [ h1 [ class "main-title" ] [ text "List of items" ]
+        , select [ class "select", onInput frmStringToSortedItems ]
+            [ option [ class "select-option", value "PriceLowToHigh" ]
+                [ text "Price  -> Low To High" ]
+            , option [ class "select-option", value "PriceHighToLow" ]
+                [ text "Price  -> High To Low" ]
+            ]
+        , div
+            [ class "items" ]
+            (List.map viewItem data.items)
+        ]
+
+
+frmStringToSortedItems : String -> Msg
+frmStringToSortedItems selectOptinValue =
+    case selectOptinValue of
+        "PriceLowToHigh" ->
+            SortedItems PriceLowToHigh
+
+        "PriceHighToLow" ->
+            SortedItems PriceHighToLow
+
+        _ ->
+            SortedItems PriceLowToHigh
 
 
 viewItem : Item -> Html Msg
@@ -227,6 +268,7 @@ viewItem item =
                 [ class "text" ]
                 [ h2 [ class "title" ] [ text item.title ]
                 , p [ class "description" ] [ text item.description ]
+                , p [ class "price" ] [ text (String.fromInt item.initialPrice) ]
                 , fieldset [ class "options" ]
                     (List.map (viewOption item) item.options)
                 ]
