@@ -119,14 +119,22 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
-        ToggledImage cardId imageUrl ->
+        ToggledImage cardId toggledImage ->
             case model of
                 Success items ->
                     let
+                        newImage =
+                            case toggledImage of
+                                Outer ->
+                                    Inner
+
+                                Inner ->
+                                    Outer
+
                         updatedCardWithToggledImage card =
                             if card.id == cardId then
                                 { card
-                                    | toggledImage = imageUrl
+                                    | toggledImage = newImage
                                 }
 
                             else
@@ -200,12 +208,20 @@ viewItem item =
                     , price = 0
                     , selected = False
                     }
+
+        imgeUrl =
+            case item.toggledImage of
+                Outer ->
+                    optionsInfo.imageUrlOuter
+
+                Inner ->
+                    optionsInfo.imageUrlInner
     in
     article [ class "item" ]
-        [ button [ class "toggle-image" ]
+        [ button [ class "toggle-image", onClick (ToggledImage item.id item.toggledImage) ]
             [ text " Toggle image" ]
         , figure [ class "figure" ]
-            [ img [ class "image", src optionsInfo.imageUrlOuter ]
+            [ img [ class "image", src imgeUrl ]
                 []
             , figcaption
                 [ class "text" ]
