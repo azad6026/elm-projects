@@ -85,6 +85,14 @@ type SortOption
     | PriceHighToLow
 
 
+type ItemCategory
+    = All
+    | Type1
+    | Type2
+    | Type3
+    | Type4
+
+
 
 -- Update
 
@@ -94,6 +102,7 @@ type Msg
     | ChangedOption String NewOption
     | ToggledImage String ItemImage
     | SortedItems SortOption
+    | FilteredTypes ItemCategory
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -162,6 +171,14 @@ update msg model =
                 _ ->
                     ( model, Cmd.none )
 
+        FilteredTypes itemType ->
+            case model of
+                Success items ->
+                    ( Success { items | items = List.filter (\i -> i.itemType == convertToString itemType) items.items }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
 
 
 -- View
@@ -190,10 +207,41 @@ viewItems data =
             , option [ class "select-option", value "PriceHighToLow" ]
                 [ text "Price  -> High To Low" ]
             ]
+        , select [ class "select", onInput frmStringToItemType ]
+            [ option [ class "select-option", value "all" ]
+                [ text "All" ]
+            , option [ class "select-option", value "type1" ]
+                [ text "Type 1" ]
+            , option [ class "select-option", value "type2" ]
+                [ text "Type 2" ]
+            , option [ class "select-option", value "type3" ]
+                [ text "Type 3" ]
+            , option [ class "select-option", value "type4" ]
+                [ text "Type 4" ]
+            ]
         , div
             [ class "items" ]
             (List.map viewItem data.items)
         ]
+
+
+frmStringToItemType : String -> Msg
+frmStringToItemType selectedItemType =
+    case selectedItemType of
+        "type1" ->
+            FilteredTypes Type1
+
+        "type2" ->
+            FilteredTypes Type2
+
+        "type3" ->
+            FilteredTypes Type3
+
+        "type4" ->
+            FilteredTypes Type4
+
+        _ ->
+            FilteredTypes All
 
 
 frmStringToSortedItems : String -> Msg
@@ -207,6 +255,25 @@ frmStringToSortedItems selectOptinValue =
 
         _ ->
             SortedItems PriceLowToHigh
+
+
+convertToString : ItemCategory -> String
+convertToString filterType =
+    case filterType of
+        Type1 ->
+            "type1"
+
+        Type2 ->
+            "type2"
+
+        Type3 ->
+            "type3"
+
+        Type4 ->
+            "type4"
+
+        All ->
+            "all"
 
 
 viewItem : Item -> Html Msg
@@ -226,12 +293,6 @@ viewItem item =
                 Green ->
                     List.filter (\op -> op.color == "green") item.options
 
-        --     justSelected =
-        --         List.filter (\i -> String.toLower i.selectedOption == i.color) item.options
-        --             |> List.head
-        -- selectedOption =
-        --     List.filter (\i -> i.selected) item.options
-        --         |> List.head
         optionsInfo =
             case List.head selecetdItem of
                 Just option ->
@@ -266,7 +327,10 @@ viewItem item =
                 []
             , figcaption
                 [ class "text" ]
-                [ h2 [ class "title" ] [ text item.title ]
+                [ strong [ class "type" ] [ text item.itemType ]
+                , h2 [ class "title" ]
+                    [ text item.title
+                    ]
                 , p [ class "description" ] [ text item.description ]
                 , p [ class "price" ] [ text (String.fromInt item.initialPrice) ]
                 , fieldset [ class "options" ]
