@@ -2,7 +2,7 @@
     "items": [
         {
             "id": "product-1",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Aurora Travel Kit",
             "description": "Chase horizons with elegance.",
@@ -39,7 +39,7 @@
         },
         {
             "id": "product-2",
-            "itemType": "type 2",
+            "itemType": "type2",
             "initialPrice": 90,
             "title": "Ocean Breeze Watch",
             "description": "Classic style, redefined.",
@@ -76,7 +76,7 @@
         },
         {
             "id": "product-3",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Forest Whisper Jacket",
             "description": "Discover timeless sophistication.",
@@ -113,7 +113,7 @@
         },
         {
             "id": "product-4",
-            "itemType": "type 3",
+            "itemType": "type3",
             "initialPrice": 100,
             "title": "Electric Pulse Sneakers",
             "description": "Designed for the modern explorer.",
@@ -150,7 +150,7 @@
         },
         {
             "id": "product-5",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Velvet Mist Shoes",
             "description": "Jewelry that captures dreams.",
@@ -187,7 +187,7 @@
         },
         {
             "id": "product-6",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Sunset Glow Hat",
             "description": "Radiate confidence with every step.",
@@ -224,7 +224,7 @@
         },
         {
             "id": "product-7",
-            "itemType": "type 4",
+            "itemType": "type4",
             "initialPrice": 100,
             "title": "Crimson City Backpack",
             "description": "Wrap yourself in luxury.",
@@ -261,7 +261,7 @@
         },
         {
             "id": "product-8",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Midnight Leather Bag",
             "description": "Inspired by nature, crafted for you.",
@@ -298,7 +298,7 @@
         },
         {
             "id": "product-9",
-            "itemType": "type 2",
+            "itemType": "type2",
             "initialPrice": 120,
             "title": "Mystic River Scarf",
             "description": "Step into the future of fashion.",
@@ -335,7 +335,7 @@
         },
         {
             "id": "product-10",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Golden Hour Sunglasses",
             "description": "Style that speaks louder.",
@@ -372,7 +372,7 @@
         },
         {
             "id": "product-11",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 89,
             "title": "Ivory Charm Wallet",
             "description": "A touch of grace in every detail.",
@@ -409,7 +409,7 @@
         },
         {
             "id": "product-12",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Sapphire Horizon Ring",
             "description": "Unleash your adventurous spirit.",
@@ -446,7 +446,7 @@
         },
         {
             "id": "product-13",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Aurora Travel Kit",
             "description": "Chase horizons with elegance.",
@@ -483,7 +483,7 @@
         },
         {
             "id": "product-14",
-            "itemType": "type 3",
+            "itemType": "type3",
             "initialPrice": 100,
             "title": "Ocean Breeze Watch",
             "description": "Classic style, redefined.",
@@ -520,7 +520,7 @@
         },
         {
             "id": "product-15",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Forest Whisper Jacket",
             "description": "Discover timeless sophistication.",
@@ -557,7 +557,7 @@
         },
         {
             "id": "product-16",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 34,
             "title": "Electric Pulse Sneakers",
             "description": "Designed for the modern explorer.",
@@ -594,7 +594,7 @@
         },
         {
             "id": "product-17",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Velvet Mist Shoes",
             "description": "Jewelry that captures dreams.",
@@ -631,7 +631,7 @@
         },
         {
             "id": "product-18",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Sunset Glow Hat",
             "description": "Radiate confidence with every step.",
@@ -668,7 +668,7 @@
         },
         {
             "id": "product-19",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Crimson City Backpack",
             "description": "Wrap yourself in luxury.",
@@ -705,7 +705,7 @@
         },
         {
             "id": "product-20",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 100,
             "title": "Midnight Leather Bag",
             "description": "Inspired by nature, crafted for you.",
@@ -742,7 +742,7 @@
         },
         {
             "id": "product-21",
-            "itemType": "type 1",
+            "itemType": "type1",
             "initialPrice": 200,
             "title": "Mystic River Scarf",
             "description": "Step into the future of fashion.",

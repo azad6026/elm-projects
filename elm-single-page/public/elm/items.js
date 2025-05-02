@@ -11145,6 +11145,31 @@ var $author$project$Items$Inner = {$: 'Inner'};
 var $author$project$Items$Success = function (a) {
 	return {$: 'Success', a: a};
 };
+var $author$project$Items$convertToString = function (filterType) {
+	switch (filterType.$) {
+		case 'Type1':
+			return 'type1';
+		case 'Type2':
+			return 'type2';
+		case 'Type3':
+			return 'type3';
+		case 'Type4':
+			return 'type4';
+		default:
+			return 'all';
+	}
+};
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
 var $elm$core$List$sortBy = _List_sortBy;
 var $author$project$Items$update = F2(
 	function (msg, model) {
@@ -11211,7 +11236,7 @@ var $author$project$Items$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			default:
+			case 'SortedItems':
 				var selectedSortOption = msg.a;
 				if (model.$ === 'Success') {
 					var items = model.a;
@@ -11248,8 +11273,52 @@ var $author$project$Items$update = F2(
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
+			default:
+				var itemType = msg.a;
+				if (model.$ === 'Success') {
+					var items = model.a;
+					return _Utils_Tuple2(
+						$author$project$Items$Success(
+							_Utils_update(
+								items,
+								{
+									items: A2(
+										$elm$core$List$filter,
+										function (i) {
+											return _Utils_eq(
+												i.itemType,
+												$author$project$Items$convertToString(itemType));
+										},
+										items.items)
+								})),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				}
 		}
 	});
+var $author$project$Items$All = {$: 'All'};
+var $author$project$Items$FilteredTypes = function (a) {
+	return {$: 'FilteredTypes', a: a};
+};
+var $author$project$Items$Type1 = {$: 'Type1'};
+var $author$project$Items$Type2 = {$: 'Type2'};
+var $author$project$Items$Type3 = {$: 'Type3'};
+var $author$project$Items$Type4 = {$: 'Type4'};
+var $author$project$Items$frmStringToItemType = function (selectedItemType) {
+	switch (selectedItemType) {
+		case 'type1':
+			return $author$project$Items$FilteredTypes($author$project$Items$Type1);
+		case 'type2':
+			return $author$project$Items$FilteredTypes($author$project$Items$Type2);
+		case 'type3':
+			return $author$project$Items$FilteredTypes($author$project$Items$Type3);
+		case 'type4':
+			return $author$project$Items$FilteredTypes($author$project$Items$Type4);
+		default:
+			return $author$project$Items$FilteredTypes($author$project$Items$All);
+	}
+};
 var $author$project$Items$PriceHighToLow = {$: 'PriceHighToLow'};
 var $author$project$Items$PriceLowToHigh = {$: 'PriceLowToHigh'};
 var $author$project$Items$SortedItems = function (a) {
@@ -11277,17 +11346,6 @@ var $elm$html$Html$article = _VirtualDom_node('article');
 var $elm$html$Html$fieldset = _VirtualDom_node('fieldset');
 var $elm$html$Html$figcaption = _VirtualDom_node('figcaption');
 var $elm$html$Html$figure = _VirtualDom_node('figure');
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$core$List$head = function (list) {
 	if (list.b) {
@@ -11305,6 +11363,7 @@ var $elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
+var $elm$html$Html$strong = _VirtualDom_node('strong');
 var $author$project$Items$ChangedOption = F2(
 	function (a, b) {
 		return {$: 'ChangedOption', a: a, b: b};
@@ -11469,6 +11528,16 @@ var $author$project$Items$viewItem = function (item) {
 						_List_fromArray(
 							[
 								A2(
+								$elm$html$Html$strong,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('type')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(item.itemType)
+									])),
+								A2(
 								$elm$html$Html$h2,
 								_List_fromArray(
 									[
@@ -11565,6 +11634,71 @@ var $author$project$Items$viewItems = function (data) {
 							]))
 					])),
 				A2(
+				$elm$html$Html$select,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('select'),
+						$elm$html$Html$Events$onInput($author$project$Items$frmStringToItemType)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('select-option'),
+								$elm$html$Html$Attributes$value('all')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('All')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('select-option'),
+								$elm$html$Html$Attributes$value('type1')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Type 1')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('select-option'),
+								$elm$html$Html$Attributes$value('type2')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Type 2')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('select-option'),
+								$elm$html$Html$Attributes$value('type3')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Type 3')
+							])),
+						A2(
+						$elm$html$Html$option,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('select-option'),
+								$elm$html$Html$Attributes$value('type4')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Type 4')
+							]))
+					])),
+				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
@@ -11606,4 +11740,4 @@ var $author$project$Items$main = $elm$browser$Browser$element(
 		view: $author$project$Items$view
 	});
 _Platform_export({'Items':{'init':$author$project$Items$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Items.Msg","aliases":{"Items.Item":{"args":[],"type":"{ id : String.String, itemType : String.String, initialPrice : Basics.Int, title : String.String, description : String.String, tags : String.String, options : List.List Items.Option, selectedOption : Items.NewOption, toggledImage : Items.ItemImage }"},"Items.Items":{"args":[],"type":"{ items : List.List Items.Item }"},"Items.Option":{"args":[],"type":"{ id : String.String, color : String.String, imageUrlOuter : String.String, imageUrlInner : String.String, imageSizes : String.String, price : Basics.Int, selected : Basics.Bool }"}},"unions":{"Items.Msg":{"args":[],"tags":{"GotItems":["Result.Result Http.Error Items.Items"],"ChangedOption":["String.String","Items.NewOption"],"ToggledImage":["String.String","Items.ItemImage"],"SortedItems":["Items.SortOption"]}},"Basics.Bool":{"args":[],"tags":{"True":[],"False":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Items.ItemImage":{"args":[],"tags":{"Outer":[],"Inner":[]}},"List.List":{"args":["a"],"tags":{}},"Items.NewOption":{"args":[],"tags":{"Yellow":[],"Red":[],"Royalblue":[],"Green":[]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Items.SortOption":{"args":[],"tags":{"PriceLowToHigh":[],"PriceHighToLow":[]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Items.Msg","aliases":{"Items.Item":{"args":[],"type":"{ id : String.String, itemType : String.String, initialPrice : Basics.Int, title : String.String, description : String.String, tags : String.String, options : List.List Items.Option, selectedOption : Items.NewOption, toggledImage : Items.ItemImage }"},"Items.Items":{"args":[],"type":"{ items : List.List Items.Item }"},"Items.Option":{"args":[],"type":"{ id : String.String, color : String.String, imageUrlOuter : String.String, imageUrlInner : String.String, imageSizes : String.String, price : Basics.Int, selected : Basics.Bool }"}},"unions":{"Items.Msg":{"args":[],"tags":{"GotItems":["Result.Result Http.Error Items.Items"],"ChangedOption":["String.String","Items.NewOption"],"ToggledImage":["String.String","Items.ItemImage"],"SortedItems":["Items.SortOption"],"FilteredTypes":["Items.ItemCategory"]}},"Basics.Bool":{"args":[],"tags":{"True":[],"False":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String.String"],"Timeout":[],"NetworkError":[],"BadStatus":["Basics.Int"],"BadBody":["String.String"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Items.ItemCategory":{"args":[],"tags":{"All":[],"Type1":[],"Type2":[],"Type3":[],"Type4":[]}},"Items.ItemImage":{"args":[],"tags":{"Outer":[],"Inner":[]}},"List.List":{"args":["a"],"tags":{}},"Items.NewOption":{"args":[],"tags":{"Yellow":[],"Red":[],"Royalblue":[],"Green":[]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Items.SortOption":{"args":[],"tags":{"PriceLowToHigh":[],"PriceHighToLow":[]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
