@@ -1,9 +1,14 @@
+.page {
+  padding-inline: 1.6rem;
+  padding-block: 1rem;
+}
+.select {
+  margin-bottom: 2rem;
+}
 .items {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.6rem;
-  padding-inline: 1.6rem;
-  padding-block: 1rem;
 }
 .image {
   width: 100%;

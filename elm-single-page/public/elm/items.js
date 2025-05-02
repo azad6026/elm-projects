@@ -11297,28 +11297,6 @@ var $author$project$Items$update = F2(
 				}
 		}
 	});
-var $author$project$Items$All = {$: 'All'};
-var $author$project$Items$FilteredTypes = function (a) {
-	return {$: 'FilteredTypes', a: a};
-};
-var $author$project$Items$Type1 = {$: 'Type1'};
-var $author$project$Items$Type2 = {$: 'Type2'};
-var $author$project$Items$Type3 = {$: 'Type3'};
-var $author$project$Items$Type4 = {$: 'Type4'};
-var $author$project$Items$frmStringToItemType = function (selectedItemType) {
-	switch (selectedItemType) {
-		case 'type1':
-			return $author$project$Items$FilteredTypes($author$project$Items$Type1);
-		case 'type2':
-			return $author$project$Items$FilteredTypes($author$project$Items$Type2);
-		case 'type3':
-			return $author$project$Items$FilteredTypes($author$project$Items$Type3);
-		case 'type4':
-			return $author$project$Items$FilteredTypes($author$project$Items$Type4);
-		default:
-			return $author$project$Items$FilteredTypes($author$project$Items$All);
-	}
-};
 var $author$project$Items$PriceHighToLow = {$: 'PriceHighToLow'};
 var $author$project$Items$PriceLowToHigh = {$: 'PriceLowToHigh'};
 var $author$project$Items$SortedItems = function (a) {
@@ -11631,71 +11609,6 @@ var $author$project$Items$viewItems = function (data) {
 						_List_fromArray(
 							[
 								$elm$html$Html$text('Price  -> High To Low')
-							]))
-					])),
-				A2(
-				$elm$html$Html$select,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('select'),
-						$elm$html$Html$Events$onInput($author$project$Items$frmStringToItemType)
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('select-option'),
-								$elm$html$Html$Attributes$value('all')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('All')
-							])),
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('select-option'),
-								$elm$html$Html$Attributes$value('type1')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Type 1')
-							])),
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('select-option'),
-								$elm$html$Html$Attributes$value('type2')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Type 2')
-							])),
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('select-option'),
-								$elm$html$Html$Attributes$value('type3')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Type 3')
-							])),
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('select-option'),
-								$elm$html$Html$Attributes$value('type4')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Type 4')
 							]))
 					])),
 				A2(
