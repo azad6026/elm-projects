@@ -225,57 +225,6 @@ viewItems data =
         ]
 
 
-frmStringToItemType : String -> Msg
-frmStringToItemType selectedItemType =
-    case selectedItemType of
-        "type1" ->
-            FilteredTypes Type1
-
-        "type2" ->
-            FilteredTypes Type2
-
-        "type3" ->
-            FilteredTypes Type3
-
-        "type4" ->
-            FilteredTypes Type4
-
-        _ ->
-            FilteredTypes All
-
-
-frmStringToSortedItems : String -> Msg
-frmStringToSortedItems selectOptinValue =
-    case selectOptinValue of
-        "PriceLowToHigh" ->
-            SortedItems PriceLowToHigh
-
-        "PriceHighToLow" ->
-            SortedItems PriceHighToLow
-
-        _ ->
-            SortedItems PriceLowToHigh
-
-
-convertToString : ItemCategory -> String
-convertToString filterType =
-    case filterType of
-        Type1 ->
-            "type1"
-
-        Type2 ->
-            "type2"
-
-        Type3 ->
-            "type3"
-
-        Type4 ->
-            "type4"
-
-        All ->
-            "all"
-
-
 viewItem : Item -> Html Msg
 viewItem item =
     let
@@ -432,3 +381,54 @@ stringToNewOption color =
 
         _ ->
             Yellow
+
+
+frmStringToItemType : String -> Msg
+frmStringToItemType selectedItemType =
+    case selectedItemType of
+        "type1" ->
+            FilteredTypes Type1
+
+        "type2" ->
+            FilteredTypes Type2
+
+        "type3" ->
+            FilteredTypes Type3
+
+        "type4" ->
+            FilteredTypes Type4
+
+        _ ->
+            FilteredTypes All
+
+
+frmStringToSortedItems : String -> Msg
+frmStringToSortedItems selectOptinValue =
+    case selectOptinValue of
+        "PriceLowToHigh" ->
+            SortedItems PriceLowToHigh
+
+        "PriceHighToLow" ->
+            SortedItems PriceHighToLow
+
+        _ ->
+            SortedItems PriceLowToHigh
+
+
+convertToString : ItemCategory -> String
+convertToString filterType =
+    case filterType of
+        Type1 ->
+            "type1"
+
+        Type2 ->
+            "type2"
+
+        Type3 ->
+            "type3"
+
+        Type4 ->
+            "type4"
+
+        All ->
+            "all"
